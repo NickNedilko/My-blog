@@ -1,11 +1,12 @@
 import { Route, Routes } from "react-router-dom";
-import SharedLayout from "./components/shared/SharedLauot";
+import SharedLayout from "./components/shared/shared-lauot";
 import Home from "./pages/Home";
 import Projects from "./pages/Projects";
-import SignUp from "./pages/SignUp";
+
 import SignIn from "./pages/SignIn";
 import Dashboard from "./pages/Dashboard";
 import About from "./pages/About";
+import SignUp from "./pages/SignUp";
 
 
 export default function App() {

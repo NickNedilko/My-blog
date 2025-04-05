@@ -1,16 +1,16 @@
 import { Button, Navbar, NavbarCollapse, NavbarLink, NavbarToggle, TextInput } from "flowbite-react";
 import { Link, useLocation } from 'react-router-dom';
 import { AiOutlineSearch } from "react-icons/ai";
-import logo from '../../assets/logo.png'
+
 import { FaMoon } from "react-icons/fa";
+import { Logo } from "./logo";
 
 export default function Header() {
  const {pathname} = useLocation();
   return (
       <Navbar className="border-b-2">
       <Link to="/" className="flex items-center self-center whitespace-nowrap text-sm sm:text-xl">
-        <img src={logo} className="mr-3 h-6 sm:h-9" alt="My Blog Logo" />
-        <span className="self-center font-semibold whitespace-nowrap dark:text-white">My Blog</span>
+        <Logo className="mr-3 text-xl md:text-2xl h-6 sm:h-9"/>
           </Link>
           <form>
               <TextInput
