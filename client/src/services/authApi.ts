@@ -1,7 +1,7 @@
 
 
 
-export const signin = async (data: Pick<User , 'email' | 'password'>) => {
+export const signin = async (data: Pick<User , 'email' | 'password'>): Promise<User> => {
 return sendRequest<User>(buildUrl('auth', 'signin'), {
     method: 'POST',
     data, 
@@ -14,7 +14,7 @@ return sendRequest<User>(buildUrl('auth', 'signin'), {
 import { User } from "../types";
 import { buildUrl, sendRequest } from "./instance";
 
-export const signup = async (data: Pick<User , 'email' | 'password' | 'userName'> ) => {
+export const signup = async (data: Pick<User , 'email' | 'password' | 'userName'> ): Promise<User> => {
 return sendRequest<User>(buildUrl('auth', 'signup'), {
     method: 'POST',
     data, 

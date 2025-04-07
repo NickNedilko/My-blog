@@ -8,7 +8,7 @@ import { Logo } from "./logo";
 export default function Header() {
  const {pathname} = useLocation();
   return (
-      <Navbar className="border-b-2">
+      <Navbar className="border-b-2 md:px-30">
         <Logo className="mr-3 text-xl md:text-2xl h-6 sm:h-9"/>
           <form>
               <TextInput
