@@ -1,25 +1,59 @@
 import User from "../models/user.model.js";
 import bcrypt from "bcryptjs";
+import { createToken } from "../utils/jwt.js";
 import { httpError } from "../utils/http-error.js";
 
 
 
-export const signUp = async(req, res) => {
-    const { email, password, userName } = req.body;
+export const signup = async (req, res) => {
+  
+    const passwordHash = await bcrypt.hash(req.body.password, 10);
 
-    if (!email || !password || !userName) {
-        throw httpError(400, "All fields are required");
-    }
-
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = new User({ email, password: hashedPassword, userName });
+    const newUser = new User({
+        email: req.body.email,
+        userName: req.body.userName,
+        password: passwordHash,
+    })
 
     const user = await newUser.save();
 
-    if (!user) {  
-        throw httpError(500, "Error creating user");
-    }
+    const token = createToken({
+        _id: user._id
+    });
+     
+    await User.findByIdAndUpdate(user._id, {token});
 
-    return res.status(201).json({ message: "User created successfully" });
+    const { passwordHash: password, ...userData } = user._doc;
+
+    res.json({
+        ...userData,
+        token
+    });
 };
+
+
+export const signin = async (req, res) => {
+    const user = await User.findOne({ email: req.body.email });
+
+    if (!user) {
+       throw httpError(401, "Email or password is invalid")
+    };
+
+    const isValidPassword = await bcrypt.compare(req.body.password, user.password);
+
+    if (!isValidPassword) { 
+       throw httpError(401, "Email or password is invalid")
+    };
+    const token = createToken({
+        _id: user._id
+    });
+
+    await User.findByIdAndUpdate(user._id, {token});
+    const { password, ...userData } = user._doc;
+
+    res.json({
+        ...userData,
+        token
+    });
+}
 

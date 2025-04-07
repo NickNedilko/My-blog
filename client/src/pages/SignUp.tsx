@@ -5,10 +5,25 @@ import { FormInput } from '../components/shared/form-input'
 import { Button } from 'flowbite-react';
 import { Link } from 'react-router-dom';
 import { Logo } from '../components/shared/logo';
+import { useMutation } from '@tanstack/react-query';
+import { signup } from '../services/authApi';
+import { useAuthStore } from '../store/auth-store';
+import { setAuthHeader } from '../lib/jwt';
 
 
 export default function SignUp() {
-
+const {mutate} = useMutation({
+    mutationFn: signup,
+      onSuccess: async (data) => {
+  console.log(data)
+      const { token, ...user } = data;
+        useAuthStore.getState().setToken(token as string);
+        useAuthStore.getState().setUser(user);
+        useAuthStore.getState().login(token as string);
+        setAuthHeader(token as string);
+        
+    }
+  })
 
 const form = useForm({
         mode: 'onChange',
@@ -20,7 +35,7 @@ const form = useForm({
         }
 });
 
-  const onSubmit = () => {console.log(form.getValues());}
+  const onSubmit = () => {mutate(form.getValues());}
   
   return (
     <div className="min-h-screen mt-20 ">
@@ -39,12 +54,12 @@ const form = useForm({
             <FormInput name='userName' label='UserName' placeholder='name'  type='text' required />
             <FormInput name='email' label='Email' placeholder='example@company.com' type='email' required />
             <FormInput name='password' label='Password' placeholder='password' type='password' required />
-                <Button type='submit' className='w-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500' >
-        Зарегистрироваться
+                <Button type='submit' className='w-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 opacity-50 hover:opacity-100' >
+                Sign Up
               </Button>
               <div className='flex gap-2 items-center justify-center'>
-                <span>Уже есть аккаунт?</span> 
-                <Link to="/sign-in" className='text-blue-500'>Войти</Link>
+                <span>Have an account?</span> 
+                <Link to="/sign-in" className='text-blue-500'>Sign In</Link>
               </div>
             </form>
   </FormProvider>

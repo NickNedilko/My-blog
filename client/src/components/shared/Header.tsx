@@ -9,9 +9,7 @@ export default function Header() {
  const {pathname} = useLocation();
   return (
       <Navbar className="border-b-2">
-      <Link to="/" className="flex items-center self-center whitespace-nowrap text-sm sm:text-xl">
         <Logo className="mr-3 text-xl md:text-2xl h-6 sm:h-9"/>
-          </Link>
           <form>
               <TextInput
                   placeholder="Search..."
