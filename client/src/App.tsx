@@ -7,6 +7,7 @@ import SignIn from "./pages/SignIn";
 import Dashboard from "./pages/Dashboard";
 import About from "./pages/About";
 import SignUp from "./pages/SignUp";
+import { RestrictedRoute } from "./lib/redirect-routes";
 
 
 export default function App() {
@@ -15,8 +16,8 @@ export default function App() {
       <Route path='/' element={<SharedLayout/>}>
       <Route index element={<Home />} />
       <Route path="/projects" element={<Projects />} />
-      <Route path="/sign-up" element={<SignUp />} />
-      <Route path="/sign-in" element={<SignIn />} />
+      <Route path="/sign-up" element={<RestrictedRoute component={<SignUp />} redirectTo='/'/>} />
+      <Route path="/sign-in" element={<RestrictedRoute component={<SignIn />} redirectTo='/'/>} />
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/about" element={<About />} />
      </Route>

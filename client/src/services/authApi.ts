@@ -1,6 +1,4 @@
 
-
-
 export const signin = async (data: Pick<User , 'email' | 'password'>): Promise<User> => {
 return sendRequest<User>(buildUrl('auth', 'signin'), {
     method: 'POST',
@@ -24,13 +22,13 @@ return sendRequest<User>(buildUrl('auth', 'signup'), {
   }); 
 };
 
-// export const logout = async () => {
-//     return sendRequest(buildUrl('auth', 'logout'), {
-//         method: 'POST',
-//         headers: {
-//           'Content-Type': 'application/json', 
-//         },
-//     })
-// }
+export const logout = async () => {
+    return sendRequest(buildUrl('auth', 'logout'), {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json', 
+        },
+    })
+}
 
 

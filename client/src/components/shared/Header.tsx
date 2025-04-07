@@ -1,13 +1,26 @@
-import { Button, Navbar, NavbarCollapse, NavbarLink, NavbarToggle, TextInput } from "flowbite-react";
+import { Avatar, Button, Dropdown, DropdownDivider, DropdownHeader, DropdownItem, Navbar, NavbarCollapse, NavbarLink, NavbarToggle, TextInput } from "flowbite-react";
 import { Link, useLocation } from 'react-router-dom';
 import { AiOutlineSearch } from "react-icons/ai";
 
 import { FaMoon } from "react-icons/fa";
 import { Logo } from "./logo";
+import { useAuthStore } from "../../store/auth-store";
+import { logout } from "../../services/authApi";
+import { clearAuthHeader } from "../../lib/jwt";
+import { useMutation } from "@tanstack/react-query";
 
 export default function Header() {
- const {pathname} = useLocation();
-  return (
+    const { pathname } = useLocation();
+    const { isLoggedIn, user } = useAuthStore();
+    
+   const {mutate} = useMutation({
+  mutationFn: logout,
+    onSuccess: async () => {
+      useAuthStore.getState().logout();
+      clearAuthHeader()
+  }
+})
+    return (
       <Navbar className="border-b-2 md:px-30">
         <Logo className="mr-3 text-xl md:text-2xl h-6 sm:h-9"/>
           <form>
@@ -22,9 +35,27 @@ export default function Header() {
               <Button color='blue' pill className="w-12 h-10 hidden sm:inline">
                   <FaMoon/>
               </Button>
-              <Link to='/sign-in'>
+                {isLoggedIn ? <Dropdown
+                    arrowIcon={false}
+                    inline
+                    label={
+                        <Avatar
+                            rounded
+                            alt='user'
+                            img={user?.avatarUrl}/>}
+                >
+                    <DropdownHeader>
+                        <span>{user?.userName} {user?.email} </span>
+                    </DropdownHeader> 
+                    <DropdownItem>
+                        <Link to='/dashbord'>profile</Link>
+                    </DropdownItem>
+                    <DropdownDivider />
+                    <DropdownItem onClick={() => mutate()}>Sign out</DropdownItem>
+            </Dropdown> :  <Link to='/sign-in'>
               <Button className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500" color='gradient' >Login</Button>
-              </Link>
+        </Link>
+            }
               <NavbarToggle/>
           </div>
               <NavbarCollapse >
