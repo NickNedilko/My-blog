@@ -2,16 +2,18 @@ import { Avatar, Button, Dropdown, DropdownDivider, DropdownHeader, DropdownItem
 import { Link, useLocation } from 'react-router-dom';
 import { AiOutlineSearch } from "react-icons/ai";
 
-import { FaMoon } from "react-icons/fa";
+import { FaMoon, FaSun } from "react-icons/fa";
 import { Logo } from "./logo";
 import { useAuthStore } from "../../store/auth-store";
 import { logout } from "../../services/authApi";
 import { clearAuthHeader } from "../../lib/jwt";
 import { useMutation } from "@tanstack/react-query";
+import { useThemeStore } from "../../store/theme";
 
 export default function Header() {
     const { pathname } = useLocation();
     const { isLoggedIn, user } = useAuthStore();
+    const { toggleTheme, theme } = useThemeStore();
     
    const {mutate} = useMutation({
   mutationFn: logout,
@@ -32,8 +34,8 @@ export default function Header() {
               <AiOutlineSearch size={16}/>
           </Button>
           <div className="flex items-center gap-4 md:order-2">
-              <Button color='blue' pill className="w-12 h-10 hidden sm:inline">
-                  <FaMoon/>
+              <Button onClick={() => toggleTheme()} color='light' pill className="w-12 h-8 hidden sm:inline ">
+                 {theme === 'dark' ? <FaMoon/> : <FaSun color="gray"/>}
               </Button>
                 {isLoggedIn ? <Dropdown
                     arrowIcon={false}
@@ -59,13 +61,13 @@ export default function Header() {
               <NavbarToggle/>
           </div>
               <NavbarCollapse >
-                  <NavbarLink className={pathname === '/' ? 'text-blue-500' : 'text-gray-600'} as ='div'>
+                  <NavbarLink className={pathname === '/' ? 'text-blue-500  dark:text-white' : 'text-gray-600'} as ='div'>
                       <Link to="/">Home</Link>
               </NavbarLink>
-              <NavbarLink className={pathname === '/about' ? 'text-blue-500' : 'text-gray-600'} as ='div'>
+              <NavbarLink className={pathname === '/about' ? 'text-blue-500 dark:text-white' : 'text-gray-600'} as ='div'>
                       <Link to="/about">About</Link>
               </NavbarLink>
-              <NavbarLink className={pathname === '/projects' ? 'text-blue-500' : 'text-gray-600'} as ='div'> 
+              <NavbarLink className={pathname === '/projects' ? 'text-blue-500  dark:text-white' : 'text-gray-600'} as ='div'> 
                   <Link to="/projects">Projects</Link>
               </NavbarLink>
               </NavbarCollapse>
