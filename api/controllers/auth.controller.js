@@ -57,3 +57,15 @@ export const signin = async (req, res) => {
     });
 }
 
+
+export const logout = async (req, res) => {
+    const { _id } = req.user;
+  
+    const user = await User.findByIdAndUpdate(_id, { token: '' }, { new: true });
+    if (!user) {
+         throw httpError(404, 'User not found')
+    }
+    res.json({
+        message: 'Logout succes'
+    })
+}
