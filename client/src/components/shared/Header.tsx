@@ -50,7 +50,7 @@ export default function Header() {
                         <span>{user?.userName} {user?.email} </span>
                     </DropdownHeader> 
                     <DropdownItem>
-                        <Link to='/dashbord'>profile</Link>
+                        <Link to='/dashbord?tab=profile'>Profile</Link>
                     </DropdownItem>
                     <DropdownDivider />
                     <DropdownItem onClick={() => mutate()}>Sign out</DropdownItem>

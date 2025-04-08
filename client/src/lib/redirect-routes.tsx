@@ -19,5 +19,5 @@ export const PrivateRoute: FC<RouteProps> = ({ component, redirectTo = '/' }) =>
    const { isLoggedIn } = useAuthStore();
   const isFetching = false;
 
-  return !isLoggedIn && !isFetching ? <Navigate to={redirectTo} /> : component;
+  return isLoggedIn && !isFetching ? <Navigate to={redirectTo} /> : component;
 }
