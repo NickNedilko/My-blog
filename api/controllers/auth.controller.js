@@ -69,3 +69,35 @@ export const logout = async (req, res) => {
         message: 'Logout succes'
     })
 }
+
+export const googleAuth = async (req, res) => {
+    const user = await User.findOne({ email: req.body.email });
+    const {email, userName} = req.body;
+    if (!user) {
+        const newUser = new User({
+            email,
+            userName,
+            password: 'googleAuth',
+        });
+        const user = await newUser.save();
+        const token = createToken({
+            _id: user._id
+        });
+        await User.findByIdAndUpdate(user._id, {token});
+        const { password, ...userData } = user._doc;
+        res.json({
+            ...userData,
+            token
+        });
+    } else {
+        const token = createToken({
+            _id: user._id
+        });
+        await User.findByIdAndUpdate(user._id, {token});
+        const { password, ...userData } = user._doc;
+        res.json({
+            ...userData,
+            token
+        }); 
+    }
+}
