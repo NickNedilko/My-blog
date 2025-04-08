@@ -31,4 +31,14 @@ export const logout = async () => {
     })
 }
 
+export const signWithGoogle = async (data: Pick<User , 'email' | 'userName' >): Promise<User> => {
+return sendRequest<User>(buildUrl('auth', 'google'), {
+    method: 'POST',
+    data, 
+    headers: {
+      'Content-Type': 'application/json', 
+    },
+  }); 
+};
+
 

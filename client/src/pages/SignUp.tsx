@@ -9,6 +9,7 @@ import { useMutation } from '@tanstack/react-query';
 import { signup } from '../services/authApi';
 import { useAuthStore } from '../store/auth-store';
 import { setAuthHeader } from '../lib/jwt';
+import { OAuth } from '../components/shared/OAuth';
 
 
 export default function SignUp() {
@@ -62,6 +63,7 @@ const form = useForm({
                   </>
                 ) : 'Sign Up'}
               </Button>
+              <OAuth/>
               <div className='flex gap-2 items-center justify-center'>
                 <span>Have an account?</span> 
                 <Link to="/sign-in" className='text-blue-500'>Sign In</Link>
