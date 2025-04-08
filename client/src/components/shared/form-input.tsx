@@ -9,6 +9,7 @@ import { ErrorText } from "./error-text";
 
 interface Props extends InputHTMLAttributes<HTMLInputElement>{
     name: string;
+    ref?: any;
     label?: string;
     required?: boolean;
     className?: string;
@@ -36,7 +37,7 @@ export const FormInput: FC<Props> = ({name, label, required, className, ...props
                 </p>
                 )}
             <div className="relative">
-                <Input className="h-12 text-md" {...register(name)} {...props} />
+                <Input  className="h-12 text-md" {...register(name)} {...props} />
                { value && <ClearButton onClick={onClickClear}/>}
             </div>
             { errorText && value && <ErrorText text={errorText} className="mt-2"/>}

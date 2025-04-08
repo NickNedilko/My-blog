@@ -49,9 +49,11 @@ export default function Header() {
                     <DropdownHeader>
                         <span>{user?.userName} {user?.email} </span>
                     </DropdownHeader> 
+                    <Link to='/dashboard?tab=profile'>
                     <DropdownItem>
-                        <Link to='/dashbord?tab=profile'>Profile</Link>
-                    </DropdownItem>
+                        Profile
+                        </DropdownItem>
+                        </Link>
                     <DropdownDivider />
                     <DropdownItem onClick={() => mutate()}>Sign out</DropdownItem>
             </Dropdown> :  <Link to='/sign-in'>
