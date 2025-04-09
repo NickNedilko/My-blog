@@ -16,7 +16,6 @@ export default function SignIn() {
 const {mutate, status} = useMutation({
     mutationFn: signin,
       onSuccess: async (data) => {
-  console.log(data)
       const { token, ...user } = data;
         useAuthStore.getState().setToken(token as string);
         useAuthStore.getState().setUser(user);

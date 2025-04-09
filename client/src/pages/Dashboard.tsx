@@ -13,7 +13,6 @@ const tab = searchParams.get('tab') || '';
         <DashboardSidebar/>
       </div>
       {tab === 'profile' && <DashbordProfile/>}
-      Dashbord
     </div>
   )
 }

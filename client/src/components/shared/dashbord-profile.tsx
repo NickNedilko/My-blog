@@ -3,16 +3,50 @@ import { FormProvider, useForm } from "react-hook-form"
 import { FormInput } from "./form-input"
 import { Title } from "./title";
 import { useAuthStore } from "../../store/auth-store";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 
 export const DashbordProfile = () => {
-    const { user } = useAuthStore();
+    const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const [cloudinaryUrl, setCloudinaryUrl] = useState<string | null>(null);
+  console.log(cloudinaryUrl);
+  const { user } = useAuthStore();
+
     if (!user) {
         return null;
       }
     const inputFileRef = useRef<HTMLInputElement>(null);
     
+    const handleImageChange = async(event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0];
+        if (file) {
+            setImageUrl(URL.createObjectURL(file));
+          
+        }
+         onUpload(file as File);
+        
+    }
+      const onUpload = async (file: File) => {
+        if (!file) {
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('upload_preset', 'my_blog'); 
+        try {
+            const response = await fetch('https://api.cloudinary.com/v1_1/dxn291kfd/image/upload', {
+                method: 'POST',
+                body: formData
+            });
+            const result = await response.json();
+            if (result) {
+                setCloudinaryUrl(result.secure_url)
+            }
+        } catch (error) {
+            console.error('Error uploading image:', error);
+        }
+    };
     const form = useForm({
             mode: 'onChange',
             // resolver: zodResolver(registerSchema),
@@ -31,10 +65,14 @@ export const DashbordProfile = () => {
                    <FormProvider {...form}>
         <form className='flex flex-col gap-5 w-[350px] md:w-[450px] justify-center mt-5' onSubmit={()=>{    }} >
                   <div className="w-40 h-40 self-center">
-                      <img onClick={()=>inputFileRef.current?.click()}  className="w-full h-full rounded-full object-cover border-8 border-[lightgray] cursor-pointer" src={user.avatarUrl} alt="User avatar" />
+                      <img
+                          onClick={() => inputFileRef.current?.click()}
+                          src={imageUrl || user.avatarUrl}
+                          className="w-full h-full rounded-full object-cover border-8 border-[lightgray] cursor-pointer"
+                          alt="User avatar" />
                   </div>
                  
-            <FormInput ref={inputFileRef} name='userName'  placeholder='name'  type='file' required className="hidden" />     
+            <FormInput ref={inputFileRef} onChange={handleImageChange} name='userName'  placeholder='name'  type='file'  required className="hidden" />     
             <FormInput name='userName'  placeholder='name'  type='text' required />
             <FormInput name='email'  placeholder='example@company.com' type='email' required />
             <FormInput name='password'  placeholder='password' type='password' required />
@@ -46,8 +84,12 @@ export const DashbordProfile = () => {
                   </>
                 ) : 'Update'}
               </Button>
+          <div className="flex justify-between mt-3">
+              <span className="text-red-500 cursor-pointer">Delete Account</span>
+              <span className="text-red-500 cursor-pointer">Sign Out</span>
+          </div>
             </form>
-  </FormProvider>
+          </FormProvider>
         </div>
    
   )
