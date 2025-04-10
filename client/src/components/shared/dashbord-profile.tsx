@@ -5,13 +5,19 @@ import { Title } from "./title";
 import { useAuthStore } from "../../store/auth-store";
 import { useRef, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
-import { updateUser } from "../../services/userApi";
+import { deleteUser} from "../../services/userApi";
+import { ModalPopup } from "./popup-modal";
+import { useLogoutMutation } from "../../mutations/auth-mutation";
+import {  useUpdateUserMutation } from "../../mutations/user-mutations";
 
 
 export const DashbordProfile = () => {
-    const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const { mutate: logout } = useLogoutMutation();
+  const { mutate: updateUser, status } = useUpdateUserMutation();
+  // const { mutate: userDelete } = useDeleteUserMutation();
+  const [openModal, setOpenModal] = useState(false);
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [cloudinaryUrl, setCloudinaryUrl] = useState<string | null>(null);
-  console.log(cloudinaryUrl);
   const { user } = useAuthStore();
 
     if (!user) {
@@ -19,11 +25,18 @@ export const DashbordProfile = () => {
       }
   const inputFileRef = useRef<HTMLInputElement>(null);
   
-    const {mutate, status} = useMutation({
-    mutationFn: updateUser,
-      onSuccess: async (data) => {
-        // @ts-ignore
-        useAuthStore.getState().setUser(data);  
+    // const {mutate, status} = useMutation({
+    // mutationFn: updateUser,
+    //   onSuccess: async (data) => {
+    //     // @ts-ignore
+    //     useAuthStore.getState().setUser(data); 
+    //     toast.success('Profile updated successfully!')
+    // }
+    // })
+    const {mutate: userDelete} = useMutation({
+    mutationFn: deleteUser,
+      onSuccess: async () => {
+        useAuthStore.getState().logout();
     }
   })
     const handleImageChange = async(event: React.ChangeEvent<HTMLInputElement>) => {
@@ -63,7 +76,7 @@ export const DashbordProfile = () => {
             avatarUrl: `${user.avatarUrl}`,
             userName: `${user.userName}`,
             email: `${user.email}`,
-            password: 'password'    
+            password: ``    
             }
     });
       const { formState } = form;
@@ -71,16 +84,17 @@ export const DashbordProfile = () => {
   
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const data = form.getValues();
-    console.log(data);
-    mutate({
-      ...data,
+    const { userName, email, password } = form.getValues();
+    
+    updateUser({
       avatarUrl: cloudinaryUrl || user.avatarUrl,
-      userName: data.userName,
-      email: data.email,
-      password: data.password
+      userName: userName,
+      email: email,
+      ...(password && { password }),
     });
   }
+
+  
   return (
       <div className="max-w-lg mx-auto p-4 w-full text-center">
           <Title text='Profile' size="xl" />
@@ -107,11 +121,12 @@ export const DashbordProfile = () => {
                 ) : 'Update'}
               </Button>
           <div className="flex justify-between mt-3">
-              <span className="text-red-500 cursor-pointer">Delete Account</span>
-              <span className="text-red-500 cursor-pointer">Sign Out</span>
+              <span onClick={()=> setOpenModal(true)} className="text-red-500 cursor-pointer">Delete Account</span>
+              <span onClick={() => logout()} className="text-red-500 cursor-pointer">Sign Out</span>
           </div>
             </form>
-          </FormProvider>
+      </FormProvider>
+      <ModalPopup openModal={openModal} setOpenModal={setOpenModal} text='Are you sure you want to delete your account?' onDelete={() => userDelete()} />
         </div>
    
   )

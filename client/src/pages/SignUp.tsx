@@ -1,30 +1,15 @@
 import { FormProvider, useForm } from 'react-hook-form'
 import phoneImg from '../assets/phone-icon.png';
-
 import { FormInput } from '../components/shared/form-input'
 import { Button, Spinner } from 'flowbite-react';
 import { Link } from 'react-router-dom';
 import { Logo } from '../components/shared/logo';
-import { useMutation } from '@tanstack/react-query';
-import { signup } from '../services/authApi';
-import { useAuthStore } from '../store/auth-store';
-import { setAuthHeader } from '../lib/jwt';
 import { OAuth } from '../components/shared/OAuth';
+import { useSignUpMutation } from '../mutations/auth-mutation';
 
 
 export default function SignUp() {
-const {mutate, status} = useMutation({
-    mutationFn: signup,
-      onSuccess: async (data) => {
-  console.log(data)
-      const { token, ...user } = data;
-        useAuthStore.getState().setToken(token as string);
-        useAuthStore.getState().setUser(user);
-        useAuthStore.getState().login(token as string);
-        setAuthHeader(token as string);
-        
-    }
-  })
+const { mutate: signup, status } = useSignUpMutation()
 
 const form = useForm({
         mode: 'onChange',
@@ -36,12 +21,11 @@ const form = useForm({
         }
 });
 
-  const onSubmit = () => {mutate(form.getValues());}
+  const onSubmit = () => {signup(form.getValues());}
   
   return (
     <div className="min-h-screen mt-20 ">
       <div className="flex flex-col gap-5 p-3 items-center max-w-3xl w-[350px] mx-auto md:flex-row ">
-        
         <div>
             <FormProvider {...form}>
         <form className='flex flex-col gap-3 w-[350px] md:w-[450px]' onSubmit={form.handleSubmit(onSubmit)} >

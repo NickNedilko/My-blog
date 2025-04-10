@@ -5,13 +5,14 @@ import { useQuery } from "@tanstack/react-query";
 import { getUser } from "../../services/userApi";
 import { useAuthStore } from "../../store/auth-store";
 import { Loader } from "./loader";
+import { Suspense } from "react";
 
 
 
 
 
 export default function SharedLauot() {
- 
+
 
   const {data: user, isLoading} = useQuery({
     queryKey: ['user'],
@@ -33,10 +34,15 @@ export default function SharedLauot() {
       ) : (
         <>
           <Header />
-          <main>
-            <Outlet />
-          </main>
-          <Footerr />
+            <main>
+              <Suspense fallback={<Loader />}>
+                <Outlet />
+              </Suspense>
+              
+            </main>
+           
+            <Footerr />
+            
         </>
       )}
     </>

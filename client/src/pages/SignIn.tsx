@@ -1,30 +1,15 @@
 import { FormProvider, useForm } from 'react-hook-form'
 import phoneImg from '../assets/phone-icon.png';
-
 import { FormInput } from '../components/shared/form-input'
 import { Button, Spinner } from 'flowbite-react';
 import { Link } from 'react-router-dom';
 import { Logo } from '../components/shared/logo';
-import { useMutation } from '@tanstack/react-query';
-import { signin} from '../services/authApi';
-import { useAuthStore } from '../store/auth-store';
-import { setAuthHeader } from '../lib/jwt';
 import { OAuth } from '../components/shared/OAuth';
+import { useSignInMutation } from '../mutations/auth-mutation';
 
 
 export default function SignIn() {
-const {mutate, status} = useMutation({
-    mutationFn: signin,
-      onSuccess: async (data) => {
-      const { token, ...user } = data;
-        useAuthStore.getState().setToken(token as string);
-        useAuthStore.getState().setUser(user);
-        useAuthStore.getState().login(token as string);
-        setAuthHeader(token as string);
-        
-    }
-  })
-
+  const { mutate: signin, status } = useSignInMutation() 
 const form = useForm({
         mode: 'onChange',
         defaultValues: {
@@ -32,8 +17,7 @@ const form = useForm({
         password: ''    
         }
 });
-
-  const onSubmit = () => {mutate(form.getValues());}
+  const onSubmit = () => {signin(form.getValues());}
   
   return (
     <div className="min-h-screen mt-20 ">

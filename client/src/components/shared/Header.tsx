@@ -5,23 +5,15 @@ import { AiOutlineSearch } from "react-icons/ai";
 import { FaMoon, FaSun } from "react-icons/fa";
 import { Logo } from "./logo";
 import { useAuthStore } from "../../store/auth-store";
-import { logout } from "../../services/authApi";
-import { clearAuthHeader } from "../../lib/jwt";
-import { useMutation } from "@tanstack/react-query";
 import { useThemeStore } from "../../store/theme";
+import { useLogoutMutation } from "../../mutations/auth-mutation";
 
 export default function Header() {
     const { pathname } = useLocation();
     const { isLoggedIn, user } = useAuthStore();
     const { toggleTheme, theme } = useThemeStore();
-    
-   const {mutate} = useMutation({
-  mutationFn: logout,
-    onSuccess: async () => {
-      useAuthStore.getState().logout();
-      clearAuthHeader()
-  }
-})
+    const { mutate: logout } = useLogoutMutation();
+
     return (
       <Navbar className="border-b-2 md:px-30">
         <Logo className="mr-3 text-xl md:text-2xl h-6 sm:h-9"/>
@@ -55,7 +47,7 @@ export default function Header() {
                         </DropdownItem>
                         </Link>
                     <DropdownDivider />
-                    <DropdownItem onClick={() => mutate()}>Sign out</DropdownItem>
+                    <DropdownItem onClick={() => logout()}>Sign out</DropdownItem>
             </Dropdown> :  <Link to='/sign-in'>
               <Button className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500" color='gradient' >Login</Button>
         </Link>
