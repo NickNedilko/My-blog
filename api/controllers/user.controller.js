@@ -67,3 +67,23 @@ export const updateUser = async (req, res) => {
         avatarUrl: updatedUser.avatarUrl
     });
 };
+
+export const deleteUser = async (req, res) => {
+    const user = req.user;
+
+    if (!user) {
+        throw httpError(401, "Unauthorized");
+    }
+    const { _id } = user;
+
+    const deletedUser = await User.findByIdAndDelete(_id);
+
+    if (!deletedUser) {
+        throw httpError(404, "User not found");    
+    }
+
+    res.json({
+        message: "User deleted successfully",
+        userId: _id 
+    })
+}
