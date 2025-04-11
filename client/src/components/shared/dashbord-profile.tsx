@@ -6,33 +6,28 @@ import { useAuthStore } from "../../store/auth-store";
 import { useRef, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { deleteUser} from "../../services/userApi";
+
 import { ModalPopup } from "./popup-modal";
 import { useLogoutMutation } from "../../mutations/auth-mutation";
 import {  useUpdateUserMutation } from "../../mutations/user-mutations";
+import { useCloudinaryUpload } from "../../hooks/cloudinary-upload";
 
 
 export const DashbordProfile = () => {
   const { mutate: logout } = useLogoutMutation();
   const { mutate: updateUser, status } = useUpdateUserMutation();
-  // const { mutate: userDelete } = useDeleteUserMutation();
   const [openModal, setOpenModal] = useState(false);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
-  const [cloudinaryUrl, setCloudinaryUrl] = useState<string | null>(null);
+
   const { user } = useAuthStore();
+
+  const { uploadImage, cloudinaryUrl } = useCloudinaryUpload();
 
     if (!user) {
         return null;
       }
   const inputFileRef = useRef<HTMLInputElement>(null);
-  
-    // const {mutate, status} = useMutation({
-    // mutationFn: updateUser,
-    //   onSuccess: async (data) => {
-    //     // @ts-ignore
-    //     useAuthStore.getState().setUser(data); 
-    //     toast.success('Profile updated successfully!')
-    // }
-    // })
+
     const {mutate: userDelete} = useMutation({
     mutationFn: deleteUser,
       onSuccess: async () => {
@@ -45,30 +40,9 @@ export const DashbordProfile = () => {
             setImageUrl(URL.createObjectURL(file));
           
         }
-         onUpload(file as File);
+        await uploadImage(file as File);
         
     }
-      const onUpload = async (file: File) => {
-        if (!file) {
-            return;
-        }
-
-        const formData = new FormData();
-        formData.append('file', file);
-        formData.append('upload_preset', 'my_blog'); 
-        try {
-            const response = await fetch('https://api.cloudinary.com/v1_1/dxn291kfd/image/upload', {
-                method: 'POST',
-                body: formData
-            });
-            const result = await response.json();
-            if (result) {
-                setCloudinaryUrl(result.secure_url)
-            }
-        } catch (error) {
-            console.error('Error uploading image:', error);
-        }
-    };
     const form = useForm({
             mode: 'onChange',
             // resolver: zodResolver(registerSchema),
@@ -107,8 +81,7 @@ export const DashbordProfile = () => {
                           className="w-full h-full rounded-full object-cover border-8 border-[lightgray] cursor-pointer"
                           alt="User avatar" />
                   </div>
-                 
-            <FormInput ref={inputFileRef} onChange={handleImageChange} name='userName'  placeholder='name'  type='file'  required className="hidden" />     
+            <input ref={inputFileRef} onChange={handleImageChange} name='avatarUrl'  type='file' required className="hidden" />     
             <FormInput name='userName'  placeholder='name'  type='text' required />
             <FormInput name='email'  placeholder='example@company.com' type='email' required />
             <FormInput name='password'  placeholder='password' type='password' required />

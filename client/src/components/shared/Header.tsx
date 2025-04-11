@@ -11,6 +11,7 @@ import { useLogoutMutation } from "../../mutations/auth-mutation";
 export default function Header() {
     const { pathname } = useLocation();
     const { isLoggedIn, user } = useAuthStore();
+    console.log(user);
     const { toggleTheme, theme } = useThemeStore();
     const { mutate: logout } = useLogoutMutation();
 
