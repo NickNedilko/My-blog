@@ -18,7 +18,8 @@ export const signup = async (req, res) => {
     const user = await newUser.save();
 
     const token = createToken({
-        _id: user._id
+        _id: user._id,
+        isAdmin: user.isAdmin
     });
      
     await User.findByIdAndUpdate(user._id, {token});
@@ -45,7 +46,8 @@ export const signin = async (req, res) => {
        throw httpError(401, "Email or password is invalid")
     };
     const token = createToken({
-        _id: user._id
+        _id: user._id,
+        isAdmin: user.isAdmin
     });
 
     await User.findByIdAndUpdate(user._id, {token});
@@ -81,7 +83,8 @@ export const googleAuth = async (req, res) => {
         });
         const user = await newUser.save();
         const token = createToken({
-            _id: user._id
+            _id: user._id,
+            isAdmin: user.isAdmin
         });
         await User.findByIdAndUpdate(user._id, {token});
         const { password, ...userData } = user._doc;
@@ -91,7 +94,8 @@ export const googleAuth = async (req, res) => {
         });
     } else {
         const token = createToken({
-            _id: user._id
+            _id: user._id,
+            isAdmin: user.isAdmin
         });
         await User.findByIdAndUpdate(user._id, {token});
         const { password, ...userData } = user._doc;

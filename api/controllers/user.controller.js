@@ -4,7 +4,7 @@ import { httpError } from "../utils/http-error.js";
 
 export const getCurrentUser = async (req, res)=>{
     const user = req.user;
-    const { _id, email, userName, avatarUrl } = user;
+    const { _id, email, userName, avatarUrl, isAdmin } = user;
     if (!user) {
         throw httpError(401, "Unauthorized")    
     }
@@ -12,7 +12,9 @@ export const getCurrentUser = async (req, res)=>{
         _id,
         email,
         userName,
-        avatarUrl
+        avatarUrl,
+        isAdmin
+       
     })
 
 } 
