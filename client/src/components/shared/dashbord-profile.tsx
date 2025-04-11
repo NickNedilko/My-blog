@@ -21,7 +21,7 @@ export const DashbordProfile = () => {
 
   const { user } = useAuthStore();
 
-  const { uploadImage, cloudinaryUrl } = useCloudinaryUpload();
+  const { uploadImage, cloudinaryUrl, uploading } = useCloudinaryUpload();
 
     if (!user) {
         return null;
@@ -74,12 +74,17 @@ export const DashbordProfile = () => {
           <Title text='Profile' size="xl" />
                    <FormProvider {...form}>
         <form className='flex flex-col gap-5 w-[350px] md:w-[450px] justify-center mt-5' onSubmit={onSubmit} >
-                  <div className="w-40 h-40 self-center">
+                  <div className="relative w-40 h-40 self-center">
                       <img
                           onClick={() => inputFileRef.current?.click()}
                           src={imageUrl || user.avatarUrl}
                           className="w-full h-full rounded-full object-cover border-8 border-[lightgray] cursor-pointer"
-                          alt="User avatar" />
+              alt="User avatar" />
+               {uploading && (
+                  <div className="absolute top-0 left-0 w-full h-full rounded-full flex items-center justify-center bg-black bg-opacity-50">
+                    <Spinner size="md"/>
+                  </div>
+                )}
                   </div>
             <input ref={inputFileRef} onChange={handleImageChange} name='avatarUrl'  type='file' required className="hidden" />     
             <FormInput name='userName'  placeholder='name'  type='text' required />

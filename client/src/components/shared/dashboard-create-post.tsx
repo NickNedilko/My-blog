@@ -6,13 +6,20 @@ import 'react-quill/dist/quill.snow.css';
 import { Title } from "./title";
 import { useRef, useState } from "react";
 import { useCloudinaryUpload } from "../../hooks/cloudinary-upload";
+import { useCreatePostMutation } from "../../mutations/post-mutation";
+import { Post } from "../../types";
 
 
 export const CreatePost = () => {
     const inputRef = useRef<HTMLInputElement>(null);
     const { uploadImage, cloudinaryUrl } = useCloudinaryUpload();
-    const [imageUrl, setImageUrl] = useState<string | null>(null);
-    console.log(cloudinaryUrl);
+    const [imageUrl, setImageUrl] = useState<string | null>('');
+    const [content, setContent] = useState<string>('');
+    const [title, setTitle] = useState<string>('');
+  const [tags, setTags] = useState<string[]>([]);
+  const [category, setCategory] = useState<string>('uncategorized');
+  
+  const { mutate: createPost} = useCreatePostMutation();
 
    const handleImageChange = async(event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
@@ -24,8 +31,19 @@ export const CreatePost = () => {
         
     }
 
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const newPost: Partial<Post> = {
+      title,
+      content,
+      category,
+      tags,
+      imageUrl: cloudinaryUrl as string,
+    };
+    createPost(newPost);
+  }
   return (
-      <div className="p-3 max-w-3xl mx-auto min-h-screen md:w-[600px] xl:w-[768px]">  
+      <form onSubmit={handleSubmit} className="p-3 max-w-3xl mx-auto min-h-screen md:w-[600px] xl:w-[768px]">  
           <Title text="Create Post" size="lg" className="text-center mb-3" />
               {imageUrl ? (
                   <div className="relative flex gap-4 items-center justify-between border-4 border-teal-500 border-dotted p-3 mb-3">
@@ -37,34 +55,44 @@ export const CreatePost = () => {
               
             )}
             <FileInput ref={inputRef} accept="image/*" onChange={handleImageChange} className="hidden" />    
-          <form className="flex flex-col gap-4 ">
+          <div className="flex flex-col gap-4 ">
               <div className="flex flex-col gap-4 sm:flex-row justify-between">
                   <TextInput
                       className="flex-1"
+                      value={title}
+                      onChange={(e) => setTitle(e.target.value)}  
                       type="text"
                       placeholder="Title"
                       required />
-                  <Select>
+          <Select
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}>
                         <option value="uncotegorized">Select category</option>
                         <option value="development">Development</option>
                         <option value="sport">Sport</option>
                       <option value="films">Films</option>
-                        <option value="free">Free</option>
+                      <option value="other">Other</option>  
                   </Select>
                  
               </div>
-                <TextInput
+        <TextInput
+          value={tags}  
+                      onChange={(e) => setTags((e.target.value as string).split(','))}
                       className="flex-1"
                       type="text"
                       placeholder="Tags"
                       required />
-             
                 <div className="border-2 border-gray-300 rounded-lg p-3">
-                    <ReactQuill theme="snow" placeholder="Write your post here..."  className="h-72 mb-16 md:mb-12" />
+          <ReactQuill
+            value={content}
+            onChange={setContent}
+            theme="snow"
+            placeholder="Write your post here..."
+            className="h-72 mb-16 md:mb-12" />
                 </div>
-                <Button type="submit" className="bg-gradient-to-r from-purple-500 to-blue-500 mt-2">Publish</Button>
-          </form>
-    </div>
+      <Button type="submit" className="bg-gradient-to-r from-purple-500 to-blue-500 mt-2">Publish</Button>
+          </div>
+    </form>
   )
 }
 
