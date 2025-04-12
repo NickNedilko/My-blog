@@ -32,3 +32,19 @@ export const createPost = async (req, res) => {
         });
     }
 }
+
+
+export const getAllPosts = async (req, res) => {
+    const posts = await Post.find().populate('user').sort({ createdAt: -1 });
+    const tags = posts.map(post => post.tags).flat().slice(0, 5);
+
+    if (!posts) {
+        throw httpError(404, 'Posts not found')
+    }
+    res.status(200).json({
+        posts,
+        tags
+    });
+}
+
+
