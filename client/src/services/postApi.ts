@@ -2,9 +2,14 @@ import { Post } from "../types";
 import { buildUrl, sendRequest } from "./instance";
 
 
+interface AllPostsResponse {
+  tags: string[];
+  posts: Post[];
+}
+
 
 export const createPost = async (data:Partial<Post> ) => {
-return sendRequest(buildUrl('post', 'add-post'), {
+return sendRequest(buildUrl('posts', 'add-post'), {
     method: 'POST',
     data, 
     headers: {
@@ -12,3 +17,13 @@ return sendRequest(buildUrl('post', 'add-post'), {
     },
   }); 
 };
+
+
+
+
+
+export const getAllPosts = async(): Promise<AllPostsResponse> => {
+    return sendRequest(buildUrl('posts'), {
+        method: 'GET',
+    })
+}

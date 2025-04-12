@@ -67,11 +67,11 @@ export const CreatePost = () => {
           <Select
             value={category}
             onChange={(e) => setCategory(e.target.value)}>
-                        <option value="uncotegorized">Select category</option>
-                        <option value="development">Development</option>
-                        <option value="sport">Sport</option>
-                      <option value="films">Films</option>
-                      <option value="other">Other</option>  
+                        <option value="Uncotegorized">Select category</option>
+                        <option value="Development">Development</option>
+                        <option value="Sport">Sport</option>
+                      <option value="Films">Films</option>
+                      <option value="Other">Other</option>  
                   </Select>
                  
               </div>

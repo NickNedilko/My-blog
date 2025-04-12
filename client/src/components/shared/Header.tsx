@@ -62,8 +62,8 @@ export default function Header() {
               <NavbarLink className={pathname === '/about' ? 'text-blue-500 dark:text-white' : 'text-gray-600'} as ='div'>
                       <Link to="/about">About</Link>
               </NavbarLink>
-              <NavbarLink className={pathname === '/projects' ? 'text-blue-500  dark:text-white' : 'text-gray-600'} as ='div'> 
-                  <Link to="/projects">Projects</Link>
+              <NavbarLink className={pathname === '/posts' ? 'text-blue-500  dark:text-white' : 'text-gray-600'} as ='div'> 
+                  <Link to="/posts">Posts</Link>
               </NavbarLink>
               </NavbarCollapse>
     </Navbar>
