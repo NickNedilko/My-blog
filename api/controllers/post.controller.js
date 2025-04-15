@@ -48,3 +48,12 @@ export const getAllPosts = async (req, res) => {
 }
 
 
+
+export const getOnePost = async (req, res) => {
+  const { slug } = req.params;
+  const post = await Post.findOne({ slug }).populate('user');
+  if (!post) {
+    throw httpError(404, 'Post not found')
+  }
+  res.status(200).json(post);
+}
