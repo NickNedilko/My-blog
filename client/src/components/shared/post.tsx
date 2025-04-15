@@ -7,14 +7,15 @@ import { UserInfo } from './user-info';
 
 
 interface PostProps {
-  _id: string;
-    title: string;
+  id: string;
+  title: string;
     category: string;
-  createdAt: string;
+    createdAt: string;
+    slug?: string;
   imageUrl?: string;
   user: {
-    _id: string;
-    fullName: string;
+    _id?: string;
+    userName: string;
     avatarUrl: string;
   };
   viewsCount: number;
@@ -28,11 +29,12 @@ interface PostProps {
 }
 
 export const Post:FC<PostProps> = ({
-  _id,
+  id,
     title,
   category,
   createdAt,
-  imageUrl,
+    imageUrl,
+    slug,
   user,
   viewsCount,
   commentsCount,
@@ -50,13 +52,13 @@ export const Post:FC<PostProps> = ({
 
 
   const onClickRemove = () => {
-    deletePost(_id);
+    deletePost(id);
   };
   return (
    <div className={`bg-white border border-[#dedede] rounded-lg overflow-hidden mb-4 relative ${isFullPost ? 'hover:border-[#4361ee] hover:shadow-md' : ''}`}>
       {isEditable && (
         <div className="absolute right-4 top-4 bg-white rounded-xl opacity-0 transition-opacity duration-150 ease-in-out hover:opacity-100">
-          <Link to={`/posts/${_id}/edit`}>
+          <Link to={`/posts/${slug}/edit`}>
               <MdEdit />
           </Link>
             <MdOutlineDelete onClick={onClickRemove}/>
@@ -74,7 +76,7 @@ export const Post:FC<PostProps> = ({
         <UserInfo {...user} additionalText={createdAt} />
         <div className='pl-10'>
           <h2 className={`text-2xl ${isFullPost ? 'text-4xl font-extrabold' : ''} mb-2`}>
-            {isFullPost ? title : <Link to={`/posts/${_id}`}>{title}</Link>}
+            {isFullPost ? title : <Link to={`/posts/${slug}`}>{title}</Link>}
           </h2>
           <ul className="flex flex-wrap gap-3 mb-2">
             {tags.map((name) => (

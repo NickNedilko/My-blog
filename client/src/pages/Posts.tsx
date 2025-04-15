@@ -7,27 +7,16 @@ import { Post } from "../components/shared/post";
 import { getAllPosts } from "../services/postApi";
 import { formateDate } from "../lib/formate-data";
 import { CommentsBlock } from "../components/shared/comments-block";
+import { PostSkeleton } from "../components/shared/post-skeleton";
 
 
 
 const Posts = () => {
-  const { data, isLoading: isLoading } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['posts'],
     queryFn: getAllPosts,
 
   });
-
-
-  // const { data: tags, isLoading: isLoadingTags } = useQuery({ queryKey: ['tags'], queryFn: getTags })
-  
-// const { mutate } = useMutation({
-//   mutationFn: deletePost,
-//   onSuccess: async () => {
-//     toast.success('Статья успешно удалена');
-
-//    await queryClient.invalidateQueries({ queryKey: ['posts'] }); 
-//   },
-// });
 
 
   return (
@@ -36,33 +25,32 @@ const Posts = () => {
         <TabItem active title="New" icon={FaRegNewspaper}/>
         <TabItem active title="Popular" icon={TbChartBarPopular}/>
       </Tabs>
-       <div className="flex flex-wrap">
-       
-        <div className="w-full md:w-2/3">
-          {data?.posts.map((post) => {
-            return (
+            <div className="flex flex-wrap mt-4">
+              <div className="w-full md:w-2/3 flex flex-col gap-6">
+          {isLoading ? (
+            [...Array(2)].map((_, i) => <PostSkeleton key={i} />)
+          ) : (
+            data?.posts.map((post) => (
               <Post
-                
-                key={post._id} 
-                //@ts-ignore
-              _id={post._id}
-              title={post.title}
+                key={post._id}
+                id={post._id.toString()}
+                title={post.title}
                 imageUrl={post.imageUrl}
-                  //@ts-ignore
-                  user={post.user}
-              createdAt={formateDate(post.createdAt)}
-              viewsCount={post.viewsCount}
+                user={post.user}
+                createdAt={formateDate(post.createdAt)}
+                viewsCount={post.viewsCount}
                 commentsCount={3}
+                slug={post.slug}
                 category={post.category}
                 deletePost={(id: string) => console.log(id)}
-              tags={post.tags}
-              // isEditable={post.user?._id === user?._id} 
-            />
-          )})}
-            </div>
-            
-        <div className="w-full md:w-1/3">
-          {!true? <div>loading</div>  :<TagsBlock items={data?.tags as string[]} isLoading={isLoading} />}
+                tags={post.tags}
+              />
+            ))
+          )}
+        </div>
+
+        <div className="w-full md:w-1/3 flex flex-col gap-6">
+          <TagsBlock items={data?.tags as string[] || []} isLoading={isLoading} />
           <CommentsBlock
             items={[
               {
@@ -77,7 +65,7 @@ const Posts = () => {
                   fullName: 'Иван Иванов',
                   avatarUrl: 'https://mui.com/static/images/avatar/2.jpg',
                 },
-                text: 'When displaying three lines or more, the avatar is not aligned at the top. You should set the prop to align the avatar at the top',
+                text: 'When displaying three lines or more, the avatar is not aligned at the top...',
               },
             ]}
             isLoading={isLoading}

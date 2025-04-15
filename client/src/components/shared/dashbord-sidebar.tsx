@@ -4,12 +4,14 @@ import { MdOutlineCreate } from "react-icons/md";
 import { FaArrowRightFromBracket } from "react-icons/fa6";
 import { Link, useSearchParams } from "react-router-dom";
 import { useLogoutMutation } from "../../mutations/auth-mutation";
+import { useAuthStore } from "../../store/auth-store";
 
 
 
 export const DashboardSidebar = () => {
   const {mutate: logout} = useLogoutMutation();
   const [searchParams] = useSearchParams();
+  const {user} = useAuthStore()
 const tab = searchParams.get('tab') || '';
   return (
     <Sidebar className="w-full md:w-56">
@@ -19,7 +21,7 @@ const tab = searchParams.get('tab') || '';
             <SidebarItem 
               active={tab === 'profile'}
               icon={FaUser}
-              label={"User"}
+              label={user?.isAdmin ? 'Admin' : 'User'}
               labelColor="dark" >
               Profile
         </SidebarItem>
