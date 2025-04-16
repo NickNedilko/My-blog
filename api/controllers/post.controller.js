@@ -57,3 +57,38 @@ export const getOnePost = async (req, res) => {
   }
   res.status(200).json(post);
 }
+
+
+export const getMyPosts = async (req, res) => {
+  const posts = await Post.find({ user: req.user._id }).populate('user');
+  if (!posts) {
+    throw httpError(404, 'Posts not found')
+  }
+  res.status(200).json(posts);
+}
+
+
+export const updatePost = async (req, res) => {
+  const { slug } = req.params;
+  const { title, content, category, tags, imageUrl } = req.body;
+
+  const post = await Post.findOneAndUpdate(
+    { slug },
+    { title, content, category, tags, imageUrl },
+    { new: true }
+  ).populate('user');
+
+  if (!post) {
+    throw httpError(404, 'Post not found')
+  }
+  res.status(200).json(post);
+}
+
+export const deletePost = async (req, res) => {
+  const { slug } = req.params;
+   const post = await Post.findOneAndDelete({ slug })
+ if (!post) {
+    throw httpError(404, 'Post not found')
+  }
+  res.status(200).json({ message: 'Post deleted successfully' });
+}
