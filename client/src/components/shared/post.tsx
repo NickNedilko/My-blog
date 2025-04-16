@@ -57,8 +57,8 @@ export const Post:FC<PostProps> = ({
   return (
    <div className={`bg-white border border-[#dedede] rounded-lg overflow-hidden mb-4 relative ${isFullPost ? 'hover:border-[#4361ee] hover:shadow-md' : ''}`}>
       {isEditable && (
-        <div className="absolute right-4 top-4 bg-white rounded-xl opacity-0 transition-opacity duration-150 ease-in-out hover:opacity-100">
-          <Link to={`/posts/${slug}/edit`}>
+        <div className="absolute flex right-4 top-4 p-3 gap-3 bg-slate-400 text-white text-xl rounded-xl ">
+          <Link to={`/dashboard?tab=edit-post&slug=${slug}`}>
               <MdEdit />
           </Link>
             <MdOutlineDelete onClick={onClickRemove}/>
@@ -102,7 +102,7 @@ export const Post:FC<PostProps> = ({
           </ul>
         </div>
           </div>
-              <div className="absolute flex gap-2 justify-center items-center right-2 top-2 bg-slate-100 p-2 text-lg rounded-xl dark:bg-slate-600 text-slate-600 dark:text-slate-200">
+              <div className="absolute flex gap-2 justify-center items-center left-4 top-4 bg-slate-100 p-2 text-lg rounded-xl dark:bg-slate-600 text-slate-600 dark:text-slate-200">
                   < MdOutlineCategory className="h-6 w-6 text-slate-600 dark:text-slate-200"/> {category}   
               </div>
     </div>

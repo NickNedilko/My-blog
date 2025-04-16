@@ -1,6 +1,7 @@
 import { Sidebar, SidebarItem, SidebarItems, SidebarItemGroup  } from "flowbite-react"
 import { FaUser } from "react-icons/fa";
 import { MdOutlineCreate } from "react-icons/md";
+import { FaClipboardList } from "react-icons/fa";
 import { FaArrowRightFromBracket } from "react-icons/fa6";
 import { Link, useSearchParams } from "react-router-dom";
 import { useLogoutMutation } from "../../mutations/auth-mutation";
@@ -32,6 +33,14 @@ const tab = searchParams.get('tab') || '';
               icon={MdOutlineCreate}
               labelColor="dark" >
               Create Post
+        </SidebarItem>
+          </Link>
+          <Link to={`/dashboard?tab=my-posts`}>
+            <SidebarItem
+              active={tab === 'my-posts'}
+              icon={FaClipboardList}
+              labelColor="dark" >
+              My Posts
         </SidebarItem>
           </Link>
         

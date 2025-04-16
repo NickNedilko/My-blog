@@ -33,3 +33,9 @@ export const getOnePost = async(slug: string): Promise<Post> => {
         method: 'GET',
     })
 }
+
+export const getMyPosts = async() => {
+    return sendRequest(buildUrl('posts', 'my-posts'), {
+        method: 'GET',
+    })
+}

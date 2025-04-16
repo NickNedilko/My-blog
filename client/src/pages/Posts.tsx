@@ -8,10 +8,12 @@ import { getAllPosts } from "../services/postApi";
 import { formateDate } from "../lib/formate-data";
 import { CommentsBlock } from "../components/shared/comments-block";
 import { PostSkeleton } from "../components/shared/post-skeleton";
+import { useAuthStore } from "../store/auth-store";
 
 
 
 const Posts = () => {
+  const {user} = useAuthStore()
   const { data, isLoading } = useQuery({
     queryKey: ['posts'],
     queryFn: getAllPosts,
@@ -44,6 +46,7 @@ const Posts = () => {
                 category={post.category}
                 deletePost={(id: string) => console.log(id)}
                 tags={post.tags}
+                isEditable={user?.isAdmin} 
               />
             ))
           )}
