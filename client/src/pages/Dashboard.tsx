@@ -19,7 +19,7 @@ const [searchParams] = useSearchParams();
       {tab === 'profile' && <DashbordProfile />}
       {tab === 'create-post' && <CreatePost />}
       {tab === 'my-posts' && <MyPosts />}
-      {tab === 'edit-post' && <CreatePost slug={slug} />}
+      {tab === 'edit-post' && <CreatePost slug={slug as string} />}
     </div>
   )
 }

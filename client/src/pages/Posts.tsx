@@ -44,7 +44,6 @@ const Posts = () => {
                 commentsCount={3}
                 slug={post.slug}
                 category={post.category}
-                deletePost={(id: string) => console.log(id)}
                 tags={post.tags}
                 isEditable={user?.isAdmin} 
               />

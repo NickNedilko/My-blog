@@ -6,12 +6,12 @@ import 'react-quill/dist/quill.snow.css';
 import { Title } from "./title";
 import { FC, useEffect, useRef, useState } from "react";
 import { useCloudinaryUpload } from "../../hooks/cloudinary-upload";
-import { useCreatePostMutation } from "../../mutations/post-mutation";
+import { useCreatePostMutation, useUpdatePostMutation } from "../../mutations/post-mutation";
 import { Post } from "../../types";
 import { useQuery } from "@tanstack/react-query";
 import { getOnePost } from "../../services/postApi";
 interface CreatePostProps {
-  slug: string;
+  slug?: string;
 }
 
 export const CreatePost: FC<CreatePostProps> = ({ slug }) => {
@@ -24,6 +24,8 @@ export const CreatePost: FC<CreatePostProps> = ({ slug }) => {
   const [tags, setTags] = useState<string[]>([]);
   const [category, setCategory] = useState<string>('uncategorized');
   const { mutate: createPost } = useCreatePostMutation();
+
+  const { mutate: updatePost } = useUpdatePostMutation();
 
   const { data: post } = useQuery({
     queryKey: ['post', slug],
@@ -40,20 +42,22 @@ export const CreatePost: FC<CreatePostProps> = ({ slug }) => {
         
   }
 
-  const handleSubmit = async (e: React.FormEvent) => {
+ const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (slug) {
+    const postData: Partial<Post> = {
+      title,
+      content,
+      category,
+      tags,
+      imageUrl: cloudinaryUrl || imageUrl || '',
+    };
+
+    if (slug && post) {
+      updatePost({ slug, data: postData });
     } else {
-      const newPost: Partial<Post> = {
-        title,
-        content,
-        category,
-        tags,
-        imageUrl: cloudinaryUrl as string,
-      };
-      createPost(newPost);
+      createPost(postData);
     }
-  }
+  };
 
 useEffect(() => {
   if (slug) {

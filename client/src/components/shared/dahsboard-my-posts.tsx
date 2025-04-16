@@ -32,7 +32,6 @@ export const MyPosts = () => {
             data?.map((post) => (
               <Post
                 key={post._id}
-                id={post._id}
                 title={post.title}
                 imageUrl={post.imageUrl}
                 user={post.user}
@@ -41,7 +40,6 @@ export const MyPosts = () => {
                 commentsCount={3}
                 slug={post.slug}
                 category={post.category}
-                deletePost={(id: string) => console.log(id)}
                 tags={post.tags}
                 isEditable={user?._id === post.user._id }
               />

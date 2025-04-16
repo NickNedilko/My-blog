@@ -1,13 +1,15 @@
 import { MdOutlineDelete, MdEdit, MdComment, MdRemoveRedEye, MdLabelImportantOutline, MdOutlineCategory } from "react-icons/md";
 
-import { FC } from 'react';
+import { FC} from 'react';
 import clsx from 'clsx';
 import { Link} from 'react-router-dom';
 import { UserInfo } from './user-info';
+import { useDeletePostMutation } from "../../mutations/post-mutation";
+
 
 
 interface PostProps {
-  id: string;
+  id?: string;
   title: string;
     category: string;
     createdAt: string;
@@ -21,7 +23,7 @@ interface PostProps {
   viewsCount: number;
   commentsCount: number;
   tags: string[];
-  deletePost: (id: string) => void;
+
   children?: React.ReactNode;
   isFullPost?: boolean;
   isLoading?: boolean;
@@ -29,8 +31,7 @@ interface PostProps {
 }
 
 export const Post:FC<PostProps> = ({
-  id,
-    title,
+  title,
   category,
   createdAt,
     imageUrl,
@@ -39,7 +40,7 @@ export const Post:FC<PostProps> = ({
   viewsCount,
   commentsCount,
   tags,
-  deletePost,
+
   children,
   isFullPost,
   isLoading,
@@ -49,10 +50,10 @@ export const Post:FC<PostProps> = ({
     return <div>skeleton</div>;
   }
 
-
+  const {mutate: deletePost} = useDeletePostMutation();
 
   const onClickRemove = () => {
-    deletePost(id);
+    deletePost(slug as string);
   };
   return (
    <div className={`bg-white border border-[#dedede] rounded-lg overflow-hidden mb-4 relative ${isFullPost ? 'hover:border-[#4361ee] hover:shadow-md' : ''}`}>

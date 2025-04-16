@@ -26,7 +26,6 @@ const { slug } = useParams<{ slug: string }>();
       title={post.title}
       imageUrl={post.imageUrl}
       user={post.user}
-      deletePost={() => {}}
       createdAt={formateDate(post.createdAt)}
       viewsCount={post.viewsCount}
       commentsCount={3}
