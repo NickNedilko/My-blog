@@ -33,21 +33,49 @@ export const createPost = async (req, res) => {
     }
 }
 
-
-export const getAllPosts = async (req, res) => {
-    const posts = await Post.find().populate('user').sort({ createdAt: -1 });
-    const tags = posts.map(post => post.tags).flat().slice(0, 5);
-
-    if (!posts) {
+export const getposts = async (req, res, next) => {
+    const startIndex = parseInt(req.query.startIndex) || 0;
+    const limit = parseInt(req.query.limit) || 9;
+    const sortDirection = req.query.order === 'asc' ? 1 : -1;
+    const posts = await Post.find({
+      ...(req.query.userId && { userId: req.query.userId }),
+      ...(req.query.category && { category: req.query.category }),
+      ...(req.query.postId && { _id: req.query.postId }),
+      ...(req.query.searchTerm && {
+        $or: [
+          { title: { $regex: req.query.searchTerm, $options: 'i' } },
+          { content: { $regex: req.query.searchTerm, $options: 'i' } },
+        ],
+      }),
+    }).populate('user')
+      .sort({ updatedAt: sortDirection })
+      .skip(startIndex)
+      .limit(limit);
+     if (!posts) {
         throw httpError(404, 'Posts not found')
     }
-    res.status(200).json({
-        posts,
-        tags
+    const totalPosts = await Post.countDocuments();
+
+    const now = new Date();
+
+    const oneMonthAgo = new Date(
+      now.getFullYear(),
+      now.getMonth() - 1,
+      now.getDate()
+    );
+
+    const lastMonthPosts = await Post.countDocuments({
+      createdAt: { $gte: oneMonthAgo },
     });
-}
-
-
+   const tags = posts.map(post => post.tags).flat().slice(0, 5);
+    res.status(200).json({
+      posts,
+      tags,
+      totalPosts,
+      lastMonthPosts,
+    });
+  
+};
 
 export const getOnePost = async (req, res) => {
   const { slug } = req.params;
