@@ -2,6 +2,7 @@ import { Sidebar, SidebarItem, SidebarItems, SidebarItemGroup  } from "flowbite-
 import { FaUser } from "react-icons/fa";
 import { MdOutlineCreate } from "react-icons/md";
 import { FaClipboardList } from "react-icons/fa";
+import { HiClipboardDocumentList } from "react-icons/hi2";
 import { FaArrowRightFromBracket } from "react-icons/fa6";
 import { Link, useSearchParams } from "react-router-dom";
 import { useLogoutMutation } from "../../mutations/auth-mutation";
@@ -43,6 +44,17 @@ const tab = searchParams.get('tab') || '';
               My Posts
         </SidebarItem>
           </Link>
+             {
+            user?.isAdmin && (
+              <Link to={`/dashboard?tab=posts`}>
+                <SidebarItem
+                  active={tab === 'posts'}
+                  icon={HiClipboardDocumentList}
+                  labelColor="dark" >
+                  Posts
+                </SidebarItem>  
+                </Link>)
+         }
         
         <SidebarItem onClick={() => logout()} icon={FaArrowRightFromBracket} className="cursor-pointer">
         Sign Out

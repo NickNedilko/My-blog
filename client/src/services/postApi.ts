@@ -23,7 +23,7 @@ return sendRequest(buildUrl('posts', 'add-post'), {
 
 
 export const getAllPosts = async(): Promise<AllPostsResponse> => {
-    return sendRequest(buildUrl('posts'), {
+    return sendRequest(buildUrl('posts', 'get-posts'), {
         method: 'GET',
     })
 }

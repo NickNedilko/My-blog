@@ -9,5 +9,5 @@ export default {
   theme: {
     extend: {},
   },
-  plugins: [require("flowbite/plugin", '@tailwindcss/typography' )],
+  plugins: [require("flowbite/plugin", '@tailwindcss/typography', '@tailwindcss-scrollbar')],
 }

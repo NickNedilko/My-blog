@@ -4,8 +4,12 @@ import { DashboardSidebar } from "../components/shared/dashbord-sidebar";
 import { DashbordProfile } from "../components/shared/dashbord-profile";
 import { CreatePost } from "../components/shared/dashboard-create-post";
 import { MyPosts } from "../components/shared/dahsboard-my-posts";
+import { useAuthStore } from "../store/auth-store";
+import { DashboardPosts } from "../components/shared/dashbord-posts";
+
 
 export default function Dashboard() {
+  const { user } = useAuthStore();
 const [searchParams] = useSearchParams();
   const tab = searchParams.get('tab') || '';
   const slug = searchParams.get('slug');
@@ -20,6 +24,7 @@ const [searchParams] = useSearchParams();
       {tab === 'create-post' && <CreatePost />}
       {tab === 'my-posts' && <MyPosts />}
       {tab === 'edit-post' && <CreatePost slug={slug as string} />}
+      {tab === 'posts' && user?.isAdmin && <DashboardPosts />}
     </div>
   )
 }
