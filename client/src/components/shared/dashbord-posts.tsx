@@ -4,24 +4,28 @@ import { useAuthStore } from "../../store/auth-store";
 import { Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow } from "flowbite-react";
 import { useDeletePostMutation } from "../../mutations/post-mutation";
 import { Link } from "react-router-dom";
-
+import { useState } from "react";
+import { Button } from "flowbite-react";
 
 
 export const DashboardPosts = () => {
+  const limit = 5;
+  const [page, setPage] = useState(1);
   const { user } = useAuthStore();
   
   const {mutate: deletePost} = useDeletePostMutation();
  
       const { data } = useQuery({
-    queryKey: ['posts'],
-    queryFn: getAllPosts,
+    queryKey: ['posts', page],
+    queryFn: () => getAllPosts(page, limit),
 
       });
     
   return (
     <div className="table-auto overflow-x-scroll md:mx-auto p-3 scrollbar xl:[&::-webkit-scrollbar]:hidden scrollbar-track-slate-100 scrollbar-thumb-slate-300 dark:scrollbar-track-gray-700 dark:scrollbar-thumb-gray-500">
       {user?.isAdmin ? (
-        <Table>
+        <>
+         <Table>
           <TableHead>
             <TableRow>
               <TableHeadCell>Date updated</TableHeadCell>
@@ -64,7 +68,26 @@ export const DashboardPosts = () => {
               </TableRow>
             ))} 
           </TableBody>
-        </Table>
+          </Table>
+          <div className="flex justify-center gap-4 mt-4 border-gray-400 border-t pt-2">
+            
+            <Button
+            className="text-white font-semibold py-2 px-4 rounded bg-gradient-to-r from-blue-500 to-pink-500 
+                transition-all duration-300  hover:from-pink-500 hover:to-blue-500"
+              outline onClick={() => setPage((prev) => Math.max(prev - 1))} disabled={page === 1}>
+                Previous
+              </Button>
+            <Button
+              className="text-white font-semibold py-2 px-4 rounded bg-gradient-to-r from-blue-500 to-pink-500 
+                transition-all duration-300  hover:from-pink-500 hover:to-blue-500"
+              outline onClick={() => setPage((prev) => prev + 1)} disabled={!data || page * limit >= data?.totalPosts}>
+                Next
+              </Button>
+            <p>Page {page}</p>
+            
+          </div>
+        </>
+        
       ) : (
         <p>You have no posts yet</p>
       )}

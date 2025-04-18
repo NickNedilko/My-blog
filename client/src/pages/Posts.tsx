@@ -1,4 +1,4 @@
-import { TabItem, Tabs } from "flowbite-react";
+import { Button, TabItem, Tabs } from "flowbite-react";
 import { FaRegNewspaper } from "react-icons/fa";
 import { TbChartBarPopular } from "react-icons/tb";
 import { TagsBlock } from '../components/shared/tags-block';
@@ -9,14 +9,17 @@ import { formateDate } from "../lib/formate-data";
 import { CommentsBlock } from "../components/shared/comments-block";
 import { PostSkeleton } from "../components/shared/post-skeleton";
 import { useAuthStore } from "../store/auth-store";
+import { useState } from "react";
 
 
 
 const Posts = () => {
+   const [page, setPage] = useState(1);
   const {user} = useAuthStore()
   const { data, isLoading } = useQuery({
-    queryKey: ['posts'],
-    queryFn: getAllPosts,
+    queryKey: ['posts', page],
+    queryFn: () => getAllPosts(page),
+    
 
   });
 
@@ -49,6 +52,25 @@ const Posts = () => {
               />
             ))
           )}
+           <div className="flex justify-center gap-4 mb-4 border-gray-400 border-t pt-2">      
+            <Button className="text-white font-semibold py-2 px-4 rounded bg-gradient-to-r from-blue-500 to-pink-500 
+                transition-all duration-300  hover:from-pink-500 hover:to-blue-500"
+              outline
+              onClick={() => setPage((prev) => Math.max(prev - 1))}
+              disabled={page === 1}>
+                          Previous
+                        </Button>
+            <Button
+              className="text-white font-semibold py-2 px-4 rounded bg-gradient-to-r from-blue-500 to-pink-500 
+                transition-all duration-300  hover:from-pink-500 hover:to-blue-500"
+              outline
+              onClick={() => setPage((prev) => prev + 1)}
+              disabled={!data || page * 4 >= data?.totalPosts}>
+                          Next
+                        </Button>
+                      <p>Page {page}</p>
+                      
+                    </div>
         </div>
 
         <div className="w-full md:w-1/3 flex flex-col gap-6">

@@ -4,7 +4,8 @@ import { buildUrl, sendRequest } from "./instance";
 
 interface AllPostsResponse {
   tags: string[];
-  posts: Post[];
+    posts: Post[];
+    totalPosts: number;
 }
 
 
@@ -22,13 +23,14 @@ return sendRequest(buildUrl('posts', 'add-post'), {
 
 
 
-export const getAllPosts = async(): Promise<AllPostsResponse> => {
-    return sendRequest(buildUrl('posts', 'get-posts'), {
+export const getAllPosts = async (page: number, limit:number = 4): Promise<AllPostsResponse> => {
+    return sendRequest(buildUrl('posts', `get-posts?page=${page}&limit=${limit}`), {
         method: 'GET',
     })
 }
 
-export const getOnePost = async(slug: string): Promise<Post> => {
+export const getOnePost = async (slug: string): Promise<Post> => {
+    console.log(slug);
     return sendRequest(buildUrl('posts' , slug), {
         method: 'GET',
     })
