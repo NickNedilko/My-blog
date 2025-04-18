@@ -34,9 +34,9 @@ export const createPost = async (req, res) => {
 }
 
 export const getposts = async (req, res, next) => {
-    const startIndex = parseInt(req.query.startIndex) || 0;
-    const limit = parseInt(req.query.limit) || 9;
-    const sortDirection = req.query.order === 'asc' ? 1 : -1;
+  const limit = parseInt(req.query.limit) || 4;
+  const skip = (req.query.page - 1) * limit || 0;
+  const sortDirection = req.query.order === 'asc' ? 1 : -1;
     const posts = await Post.find({
       ...(req.query.userId && { userId: req.query.userId }),
       ...(req.query.category && { category: req.query.category }),
@@ -49,7 +49,7 @@ export const getposts = async (req, res, next) => {
       }),
     }).populate('user')
       .sort({ updatedAt: sortDirection })
-      .skip(startIndex)
+      .skip(skip)
       .limit(limit);
      if (!posts) {
         throw httpError(404, 'Posts not found')
@@ -79,7 +79,12 @@ export const getposts = async (req, res, next) => {
 
 export const getOnePost = async (req, res) => {
   const { slug } = req.params;
-  const post = await Post.findOne({ slug }).populate('user');
+  const post = await Post.findOneAndUpdate(
+    { slug },
+    { $inc: { viewsCount: 1 } },
+    { timestamps: false },
+    { new: true }).populate('user', '-password');
+  
   if (!post) {
     throw httpError(404, 'Post not found')
   }
