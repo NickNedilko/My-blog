@@ -87,3 +87,29 @@ export const deleteUser = async (req, res) => {
         userId: _id 
     })
 }
+
+
+export const getAllUsers = async (req, res) => {
+    if(!req.user.isAdmin) {
+        throw httpError(403, "Forbidden")
+    }
+    const skip = (parseInt(req.query.page) - 1) * parseInt(req.query.limit) || 0;
+    
+    const limit = parseInt(req.query.limit) || 10;
+    const users = await User.find().select("-password").skip(skip).limit(limit); // Exclude password field
+    if (!users) {
+        throw httpError(404, "Users not found")
+    }
+    const totalUsers = await User.countDocuments();
+
+    const now = new Date();
+    const oneMonthAgo = new Date(now.getFullYear(), now.getMonth() - 1, now.getDate());
+    const lastMonthUsers = await User.countDocuments({
+        createdAt: { $gte: oneMonthAgo },
+    });
+    res.status(200).json({
+        users,
+        totalUsers,
+        lastMonthUsers,
+    });
+}
