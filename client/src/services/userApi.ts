@@ -11,7 +11,7 @@ export const getUser = () => {
         return Promise.reject(new Error('No token found'));
     }
     setAuthHeader(token);
-    return sendRequest(buildUrl('user', 'get-user'),
+    return sendRequest(buildUrl(['user', 'get-user']),
     {
         method: 'GET',
         headers: {
@@ -21,7 +21,7 @@ export const getUser = () => {
 }
 
 export const updateUser = ( data: Partial<User>) => {
-    return sendRequest(buildUrl('user', 'update-user'),
+    return sendRequest(buildUrl(['user', 'update-user']),
     {
         method: 'PATCH', 
         data   
@@ -29,7 +29,7 @@ export const updateUser = ( data: Partial<User>) => {
 }
 
 export const deleteUser = () => {
-    return sendRequest(buildUrl('user', 'delete-user'),
+    return sendRequest(buildUrl(['user', 'delete-user']),
     {
         method: 'DELETE',
      

@@ -69,8 +69,8 @@ export const DashboardPosts = () => {
             ))} 
           </TableBody>
           </Table>
-          <div className="flex justify-center gap-4 mt-4 border-gray-400 border-t pt-2">
-            
+          {!data || data?.totalPosts > limit && (
+            <div className="flex justify-center gap-4 mt-4 border-gray-400 border-t pt-2">
             <Button
             className="text-white font-semibold py-2 px-4 rounded bg-gradient-to-r from-blue-500 to-pink-500 
                 transition-all duration-300  hover:from-pink-500 hover:to-blue-500"
@@ -84,8 +84,8 @@ export const DashboardPosts = () => {
                 Next
               </Button>
             <p>Page {page}</p>
-            
           </div>
+          )}
         </>
         
       ) : (
