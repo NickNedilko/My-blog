@@ -2,9 +2,14 @@ import { setAuthHeader } from "../lib/jwt";
 import { User } from "../types";
 import { buildUrl, sendRequest } from "./instance";
 
+interface UsersResponse { 
+    users: User[];
+    totalUsers: number;
+    lastMonthUsers: number;
+}
 
 
-export const getUser = () => {
+export const getUser = ():Promise<User> => {
     const token = localStorage.getItem('authToken');
    
     if (!token) {
@@ -28,10 +33,16 @@ export const updateUser = ( data: Partial<User>) => {
     });
 }
 
-export const deleteUser = () => {
-    return sendRequest(buildUrl(['user', 'delete-user']),
+export const deleteUser = (id:string) => {
+    return sendRequest(buildUrl(['user', 'delete-user', id]),
     {
         method: 'DELETE',
      
     });
+}
+
+export const getUsers = async (page: number, limit:number):Promise<UsersResponse> => {
+    return sendRequest(buildUrl(['user', 'get-users'], {page, limit} ), {
+        method: 'GET',
+    })
 }

@@ -23,7 +23,7 @@ return sendRequest(buildUrl(['posts', 'add-post']), {
 
 
 
-export const getAllPosts = async (page: number, limit:number = 4): Promise<AllPostsResponse> => {
+export const getAllPosts = async (page: number, limit:number=4): Promise<AllPostsResponse> => {
     return sendRequest(buildUrl(['posts', 'get-posts'], {page, limit} ), {
         method: 'GET',
     })

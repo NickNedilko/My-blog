@@ -1,7 +1,7 @@
 import { Sidebar, SidebarItem, SidebarItems, SidebarItemGroup  } from "flowbite-react"
 import { FaUser } from "react-icons/fa";
 import { MdOutlineCreate } from "react-icons/md";
-import { FaClipboardList } from "react-icons/fa";
+import { FaClipboardList, FaUsers } from "react-icons/fa";
 import { HiClipboardDocumentList } from "react-icons/hi2";
 import { FaArrowRightFromBracket } from "react-icons/fa6";
 import { Link, useSearchParams } from "react-router-dom";
@@ -52,6 +52,17 @@ const tab = searchParams.get('tab') || '';
                   icon={HiClipboardDocumentList}
                   labelColor="dark" >
                   Posts
+                </SidebarItem>  
+                </Link>)
+          }
+           {
+            user?.isAdmin && (
+              <Link to={`/dashboard?tab=users`}>
+                <SidebarItem
+                  active={tab === 'users'}
+                  icon={FaUsers}
+                  labelColor="dark" >
+                  Users
                 </SidebarItem>  
                 </Link>)
          }

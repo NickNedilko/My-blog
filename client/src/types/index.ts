@@ -6,6 +6,8 @@ export interface User {
     isAdmin: boolean;
     password: string;
     avatarUrl: string;
+    createdAt: Date;
+    updatedAt: Date;
     token: string;    
 }
 

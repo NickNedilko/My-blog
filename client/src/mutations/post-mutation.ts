@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createPost, deletePost, updatePost } from "../services/postApi";
 import { toast } from "react-toastify";
 
@@ -24,13 +24,18 @@ export const useUpdatePostMutation = () => {
 
 
 export const useDeletePostMutation = () => {
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: (slug: string) => deletePost(slug),
     onSuccess: () => {
       toast.success('Post deleted successfully!');
+      queryClient.invalidateQueries({
+        queryKey: ['posts'], 
+      });
     },
     onError: () => {
       toast.error('Failed to delete post.');
-    }
+    },
   });
 };

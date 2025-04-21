@@ -6,7 +6,6 @@ import { useAuthStore } from "../../store/auth-store";
 import { useRef, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { deleteUser} from "../../services/userApi";
-
 import { ModalPopup } from "./popup-modal";
 import { useLogoutMutation } from "../../mutations/auth-mutation";
 import {  useUpdateUserMutation } from "../../mutations/user-mutations";
@@ -86,7 +85,7 @@ export const DashbordProfile = () => {
                   </div>
                 )}
                   </div>
-            <input ref={inputFileRef} onChange={handleImageChange} name='avatarUrl'  type='file' required className="hidden" />     
+            <input ref={inputFileRef} onChange={handleImageChange} name='avatarUrl'  type='file' className="hidden" />     
             <FormInput name='userName'  placeholder='name'  type='text' required />
             <FormInput name='email'  placeholder='example@company.com' type='email' required />
             <FormInput name='password'  placeholder='password' type='password' required />
@@ -104,7 +103,7 @@ export const DashbordProfile = () => {
           </div>
             </form>
       </FormProvider>
-      <ModalPopup openModal={openModal} setOpenModal={setOpenModal} text='Are you sure you want to delete your account?' onDelete={() => userDelete()} />
+      <ModalPopup openModal={openModal} setOpenModal={setOpenModal} text='Are you sure you want to delete your account?' onDelete={() => userDelete(user._id as string)} />
         </div>
    
   )
