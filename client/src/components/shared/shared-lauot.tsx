@@ -7,6 +7,7 @@ import { getUser } from "../../services/userApi";
 import { useAuthStore } from "../../store/auth-store";
 import { Loader } from "./loader";
 import { Suspense, useEffect } from "react";
+import { ScrollToTop } from "./scroll-to-top";
 
 
 
@@ -38,7 +39,8 @@ export default function SharedLauot() {
       {isLoading ? (
         <Loader />
       ) : (
-        <>
+          <>
+            <ScrollToTop/>
           <Header />
             <main>
               <Suspense fallback={<Loader />}>

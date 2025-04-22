@@ -2,10 +2,10 @@ import { useParams } from "react-router-dom";
 import { getOnePost } from "../services/postApi";
 import { Post } from "../components/shared/post";
 import DOMPurify from "dompurify";
-import { CommentsBlock } from "../components/shared/comments-block";
 
 import { useQuery } from "@tanstack/react-query";
 import { formateDate } from "../lib/formate-data";
+import { CommentSection } from "../components/shared/comment-section";
 
 
 const FullPost = () => {
@@ -37,27 +37,7 @@ const { slug } = useParams<{ slug: string }>();
          
        
       </Post>
-      <CommentsBlock
-        items={[
-          {
-            user: {
-              fullName: "Вася Пупкин",
-              avatarUrl: "https://mui.com/static/images/avatar/1.jpg",
-            },
-            text: "Это тестовый комментарий 555555",
-          },
-          {
-            user: {
-              fullName: "Иван Иванов",
-              avatarUrl: "https://mui.com/static/images/avatar/2.jpg",
-            },
-            text: "When displaying three lines or more, the avatar is not aligned at the top. You should set the prop to align the avatar at the top",
-          },
-        ]}
-        
-      >
-        
-      </CommentsBlock>
+      <CommentSection postId={post._id} />
     </div>
   );
 };
