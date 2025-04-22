@@ -69,13 +69,10 @@ export const updateUser = async (req, res) => {
 };
 
 export const deleteUser = async (req, res) => {
-    const user = req.user;
-
-    if (!user) {
-        throw httpError(401, "Unauthorized");
-    }
-    const { _id } = user;
-
+ 
+    const _id = req.params.id;
+   
+    
     const deletedUser = await User.findByIdAndDelete(_id);
 
     if (!deletedUser) {
