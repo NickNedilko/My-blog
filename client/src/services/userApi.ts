@@ -46,3 +46,9 @@ export const getUsers = async (page: number, limit:number):Promise<UsersResponse
         method: 'GET',
     })
 }
+
+export const getUserById = async (id:string):Promise<User> => {
+    return sendRequest(buildUrl(['user', id]), {
+        method: 'GET',
+    })
+}

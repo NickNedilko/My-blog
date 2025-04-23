@@ -20,8 +20,7 @@ export const DashboardPosts = () => {
     queryFn: () => getAllPosts(page, limit),
       });
     
-  console.log(data);
-  
+
   return (
     <div className="table-auto overflow-x-scroll md:mx-auto p-3 scrollbar xl:[&::-webkit-scrollbar]:hidden scrollbar-track-slate-100 scrollbar-thumb-slate-300 dark:scrollbar-track-gray-700 dark:scrollbar-thumb-gray-500">
       {user?.isAdmin ? (

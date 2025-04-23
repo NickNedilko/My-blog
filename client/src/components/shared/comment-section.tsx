@@ -3,6 +3,9 @@ import { useAuthStore } from "../../store/auth-store";
 import { Link } from "react-router-dom";
 import { Button, Textarea } from "flowbite-react";
 import { useCreateCommentMutation } from "../../mutations/comment-mutation";
+import { useQuery } from "@tanstack/react-query";
+import { Comment } from "./comment";
+import { getPostComments } from "../../services/commentApi";
 
 
 interface CommentSectionProps {
@@ -11,7 +14,14 @@ interface CommentSectionProps {
 export const CommentSection:FC<CommentSectionProps> = ({postId}) => {
   const {user} = useAuthStore();
   const [comment, setComment] = useState('')
-    const {mutate} = useCreateCommentMutation();
+    const { mutate } = useCreateCommentMutation();
+    
+    const { data: postComments } = useQuery({
+      queryKey: ['post-comments', postId],
+        queryFn: () => getPostComments(postId),
+        });
+    
+    
     
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -61,6 +71,25 @@ export const CommentSection:FC<CommentSectionProps> = ({postId}) => {
                     </div>
                 </form>
             )}
+               {postComments?.length ? (
+                <>
+                <div className="text-sm my-5 flex items-center gap-1">
+                    <p className="text-gray-500">Comments:</p>
+                    <div className="border border-gray-400 py-1 rounded-sm px-2">
+                    <p className="text-sm text-gray-500">{postComments.length}</p>
+                    </div>                   
+                </div>
+                </>
+            ) : (
+                <div className="flex items-center justify-center mt-4">
+                    <p className="text-gray-500 text-sm">No comments yet. Be the first to comment!</p>
+                </div>
+            )}
+            <ul>
+                 {postComments?.map((comment) => (
+                <Comment key={comment._id} comment={comment} id={comment.user._id}/>
+            ))}
+           </ul>
     </div>
   )
 }

@@ -1,3 +1,4 @@
+import { PostCommentResponse } from "../types";
 import { buildUrl, sendRequest } from "./instance";
 
 
@@ -14,4 +15,11 @@ export const createComment = async (data:CommentPayload) => {
           'Content-Type': 'application/json', 
         },
       }); 
-    };
+};
+    
+
+export const getPostComments = async (postId: string):Promise<PostCommentResponse[]> => {
+  return sendRequest(buildUrl(['comments', 'get-post-comments', postId]), {
+    method: 'GET',
+  });
+};
