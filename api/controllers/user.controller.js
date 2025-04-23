@@ -110,3 +110,14 @@ export const getAllUsers = async (req, res) => {
         lastMonthUsers,
     });
 }
+
+export const getUserById = async (req, res) => {
+    const userId = req.params.id;
+    const user = await User.findById(userId).select("-password "); // Exclude password field
+
+    if (!user) {
+        throw httpError(404, "User not found")
+    }
+
+    res.status(200).json(user);
+}
