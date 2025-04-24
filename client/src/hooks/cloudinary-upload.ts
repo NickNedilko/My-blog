@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState } from 'react';
 
 interface UseCloudinaryUploadReturn {
   cloudinaryUrl: string | null;
@@ -23,10 +23,13 @@ export const useCloudinaryUpload = (): UseCloudinaryUploadReturn => {
     setError(null);
 
     try {
-      const res = await fetch('https://api.cloudinary.com/v1_1/dxn291kfd/image/upload', {
-        method: 'POST',
-        body: formData,
-      });
+      const res = await fetch(
+        'https://api.cloudinary.com/v1_1/dxn291kfd/image/upload',
+        {
+          method: 'POST',
+          body: formData,
+        }
+      );
 
       const result = await res.json();
 

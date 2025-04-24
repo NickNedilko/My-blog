@@ -1,15 +1,57 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { createComment } from "../services/commentApi"
-
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import {
+  createComment,
+  deleteComment,
+  editComment,
+  likeComment,
+} from '../services/commentApi';
 
 export const useCreateCommentMutation = () => {
-   const queryClient = useQueryClient();
-    return useMutation({
+  const queryClient = useQueryClient();
+  return useMutation({
     mutationFn: createComment,
-      onSuccess: async () => {
+    onSuccess: async () => {
       queryClient.invalidateQueries({
-         queryKey: ['post-comments'],
-        });
-    }
-    })
-}
+        queryKey: ['post-comments'],
+      });
+    },
+  });
+};
+
+export const useLikeCommentMutation = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: likeComment,
+    onSuccess: async () => {
+      queryClient.invalidateQueries({
+        queryKey: ['post-comments'],
+      });
+    },
+  });
+};
+
+export const useDeleteCommentMutation = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (commentId: string) => deleteComment(commentId),
+    onSuccess: async () => {
+      queryClient.invalidateQueries({
+        queryKey: ['post-comments'],
+      });
+    },
+  });
+};
+
+
+export const useEditCommentMutation = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({commentId, data}: {commentId: string; data: any}) =>
+      editComment(commentId, data),
+    onSuccess: async () => {
+      queryClient.invalidateQueries({
+        queryKey: ['post-comments'],
+      });
+    },
+  });
+};

@@ -1,14 +1,13 @@
-import { FC } from "react";
-import { useThemeStore } from "../../store/theme";
+import { FC } from 'react';
+import { useThemeStore } from '../../store/theme';
 
 interface Props {
-    children: React.ReactNode
+  children: React.ReactNode;
 }
 
-export const ThemeProvider:FC<Props>=({children}) =>  {
-    const { theme } = useThemeStore();
-    
-    
+export const ThemeProvider: FC<Props> = ({ children }) => {
+  const { theme } = useThemeStore();
+
   return (
     // Контейнер, который меняет тему
     <div className={`min-h-screen ${theme === 'dark' ? 'dark' : 'light'}`}>
@@ -18,5 +17,4 @@ export const ThemeProvider:FC<Props>=({children}) =>  {
       </div>
     </div>
   );
-  
-}
+};

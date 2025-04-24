@@ -11,9 +11,9 @@ export const PostSkeleton = () => {
           </div>
         </div>
         <div className="ml-12 mt-4">
-            <div className="w-1/3 h-[25px] bg-gray-200 animate-pulse rounded mb-2" />
-            <div className="w-1/2 h-[20px] bg-gray-200 animate-pulse rounded mb-2" />
-                  
+          <div className="w-1/3 h-[25px] bg-gray-200 animate-pulse rounded mb-2" />
+          <div className="w-1/2 h-[20px] bg-gray-200 animate-pulse rounded mb-2" />
+
           <div className="flex gap-4">
             <div className="w-10 h-[20px] bg-gray-200 animate-pulse rounded" />
             <div className="w-10 h-[20px] bg-gray-200 animate-pulse rounded" />

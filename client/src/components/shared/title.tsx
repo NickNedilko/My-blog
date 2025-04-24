@@ -9,7 +9,11 @@ interface ITitleProps {
   text: string;
 }
 
-export const Title: React.FC<ITitleProps> = ({ text, size = 'sm', className }) => {
+export const Title: React.FC<ITitleProps> = ({
+  text,
+  size = 'sm',
+  className,
+}) => {
   const mapTagBySize = {
     xs: 'h5',
     sm: 'h4',
@@ -31,6 +35,6 @@ export const Title: React.FC<ITitleProps> = ({ text, size = 'sm', className }) =
   return React.createElement(
     mapTagBySize[size],
     { className: clsx(mapClassNameBySize[size], className) },
-    text,
+    text
   );
 };
