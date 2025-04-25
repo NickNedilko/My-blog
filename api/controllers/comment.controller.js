@@ -1,11 +1,19 @@
 import Comment from "../models/comment.model.js";
+import Post from "../models/post.model.js";
 import { httpError } from "../utils/http-error.js";
 
 
 export const createComment = async (req, res) => {  
     const { content, post } = req.body;
     const user = req.user._id;
-    // Получаем ID пользователя из токена
+   
+  await Post.findOneAndUpdate(
+  { _id: post }, 
+  { $inc: { commentCount: 1 } },
+  { new: true, timestamps: false } 
+);
+ 
+
     const newComment = await Comment.create({ content, post, user });
     res.status(201).json(newComment);
 }
@@ -52,6 +60,13 @@ export const deleteComment = async (req, res) => {
         throw httpError(403, "You are not authorized to delete this comment");
     }
     await Comment.findByIdAndDelete(commentId);
+    
+    await Post.findOneAndUpdate(
+        { _id: comment.post }, 
+        { $inc: { commentCount: -1 } },
+        { new: true, timestamps: false } 
+    );
+
     res.status(200).json({ message: "Comment deleted successfully" });
 }
 
@@ -69,4 +84,12 @@ export const updateComment = async (req, res) => {
     comment.content = content;
     await comment.save();
     res.status(200).json(comment);
+}
+    
+export const getAllComments = async (req, res) => {
+    const comments = await Comment.find().populate("user", 'userName avatarUrl').sort({ createdAt: -1 }).limit(6);
+    if (!comments) {
+        throw httpError(404, "Comments not found");
     }
+    res.status(200).json(comments);
+}
