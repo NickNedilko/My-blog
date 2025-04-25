@@ -10,6 +10,7 @@ import { CommentsBlock } from '../components/shared/comments-block';
 import { PostSkeleton } from '../components/shared/post-skeleton';
 import { useAuthStore } from '../store/auth-store';
 import { useState } from 'react';
+import { getComments } from '../services/commentApi';
 
 const Posts = () => {
   const limit = 4;
@@ -18,6 +19,11 @@ const Posts = () => {
   const { data, isLoading } = useQuery({
     queryKey: ['posts', page],
     queryFn: () => getAllPosts(page),
+  });
+
+  const {data:comments} = useQuery({
+    queryKey: ['comments'],
+    queryFn: () => getComments(),
   });
 
   return (
@@ -39,7 +45,7 @@ const Posts = () => {
                   user={post.user}
                   createdAt={formateDate(post.createdAt)}
                   viewsCount={post.viewsCount}
-                  commentsCount={3}
+                  commentsCount={post.commentCount}
                   slug={post.slug}
                   category={post.category}
                   tags={post.tags}
@@ -78,22 +84,8 @@ const Posts = () => {
             isLoading={isLoading}
           />
           <CommentsBlock
-            items={[
-              {
-                user: {
-                  fullName: 'Вася Пупкин',
-                  avatarUrl: 'https://mui.com/static/images/avatar/1.jpg',
-                },
-                text: 'Это тестовый комментарий',
-              },
-              {
-                user: {
-                  fullName: 'Иван Иванов',
-                  avatarUrl: 'https://mui.com/static/images/avatar/2.jpg',
-                },
-                text: 'When displaying three lines or more, the avatar is not aligned at the top...',
-              },
-            ]}
+            // @ts-ignore
+            items={comments}
             isLoading={isLoading}
           />
         </div>

@@ -3,20 +3,29 @@ import { createPost, deletePost, updatePost } from '../services/postApi';
 import { toast } from 'react-toastify';
 
 export const useCreatePostMutation = () => {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: createPost,
     onSuccess: async () => {
       toast.success('Post created successfully!');
+     await queryClient.invalidateQueries({
+        queryKey: ['posts'],
+     });
+      
     },
   });
 };
 
 export const useUpdatePostMutation = () => {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: ({ slug, data }: { slug: string; data: any }) =>
       updatePost(slug, data),
     onSuccess: async () => {
       toast.success('Post updated successfully!');
+      await queryClient.invalidateQueries({
+        queryKey: ['posts'],
+      });
     },
   });
 };
@@ -26,9 +35,9 @@ export const useDeletePostMutation = () => {
 
   return useMutation({
     mutationFn: (slug: string) => deletePost(slug),
-    onSuccess: () => {
+    onSuccess: async() => {
       toast.success('Post deleted successfully!');
-      queryClient.invalidateQueries({
+      await  queryClient.invalidateQueries({
         queryKey: ['posts'],
       });
     },

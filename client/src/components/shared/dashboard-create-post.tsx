@@ -13,11 +13,14 @@ import {
 import { Post } from '../../types';
 import { useQuery } from '@tanstack/react-query';
 import { getOnePost } from '../../services/postApi';
+import { useNavigate } from 'react-router-dom';
+
 interface CreatePostProps {
   slug?: string;
 }
 
 export const CreatePost: FC<CreatePostProps> = ({ slug }) => {
+  const navigate = useNavigate();
   const inputRef = useRef<HTMLInputElement>(null);
   const { uploadImage, cloudinaryUrl } = useCloudinaryUpload();
   const [imageUrl, setImageUrl] = useState<string | null>('');
@@ -44,7 +47,7 @@ export const CreatePost: FC<CreatePostProps> = ({ slug }) => {
     await uploadImage(file as File);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async(e: React.FormEvent) => {
     e.preventDefault();
     const postData: Partial<Post> = {
       title,
@@ -55,10 +58,11 @@ export const CreatePost: FC<CreatePostProps> = ({ slug }) => {
     };
 
     if (slug && post) {
-      updatePost({ slug, data: postData });
+     updatePost({ slug, data: postData });
     } else {
-      createPost(postData);
+     createPost(postData);
     }
+     navigate('/dashboard?tab=my-posts');
   };
 
   useEffect(() => {

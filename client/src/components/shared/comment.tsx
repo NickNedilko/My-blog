@@ -20,7 +20,6 @@ interface CommentProps {
       avatarUrl: string;
     };
   };
-
   id: string;
 }
 

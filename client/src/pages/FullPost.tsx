@@ -27,7 +27,7 @@ const FullPost = () => {
         user={post.user}
         createdAt={formateDate(post.createdAt)}
         viewsCount={post.viewsCount}
-        commentsCount={3}
+        commentsCount={post.commentCount}
         tags={post.tags}
         category={post.category}
         isFullPost

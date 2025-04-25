@@ -11,7 +11,7 @@ export const useCreateCommentMutation = () => {
   return useMutation({
     mutationFn: createComment,
     onSuccess: async () => {
-      queryClient.invalidateQueries({
+    await  queryClient.invalidateQueries({
         queryKey: ['post-comments'],
       });
     },
@@ -23,7 +23,7 @@ export const useLikeCommentMutation = () => {
   return useMutation({
     mutationFn: likeComment,
     onSuccess: async () => {
-      queryClient.invalidateQueries({
+     await queryClient.invalidateQueries({
         queryKey: ['post-comments'],
       });
     },
@@ -35,7 +35,7 @@ export const useDeleteCommentMutation = () => {
   return useMutation({
     mutationFn: (commentId: string) => deleteComment(commentId),
     onSuccess: async () => {
-      queryClient.invalidateQueries({
+     await queryClient.invalidateQueries({
         queryKey: ['post-comments'],
       });
     },
@@ -49,7 +49,7 @@ export const useEditCommentMutation = () => {
     mutationFn: ({commentId, data}: {commentId: string; data: any}) =>
       editComment(commentId, data),
     onSuccess: async () => {
-      queryClient.invalidateQueries({
+    await  queryClient.invalidateQueries({
         queryKey: ['post-comments'],
       });
     },

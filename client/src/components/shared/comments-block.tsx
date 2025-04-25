@@ -1,6 +1,7 @@
 import { FaUserCircle } from 'react-icons/fa';
 import { FC, Fragment } from 'react';
 import { Avatar } from 'flowbite-react';
+import moment from 'moment';
 
 interface CommentsBlockProps {
   items: any[];
@@ -43,10 +44,12 @@ export const CommentsBlock: FC<CommentsBlockProps> = ({
                 ) : (
                   <>
                     <p className="text-sm font-semibold text-gray-900 dark:text-white">
-                      {obj.user.fullName}
+                      {obj.user.userName || 'Deleted author'}  <span className="text-xs text-gray-400">
+                                    {moment(obj.createdAt).fromNow()}
+                                  </span>
                     </p>
                     <p className="text-sm text-gray-600 dark:text-gray-400">
-                      {obj.text}
+                      {obj.content}
                     </p>
                   </>
                 )}

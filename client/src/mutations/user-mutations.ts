@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { deleteUser, updateUser } from '../services/userApi';
 import { toast } from 'react-toastify';
 
+
 import { useAuthStore } from '../store/auth-store';
 
 export const useUpdateUserMutation = () => {
@@ -13,7 +14,7 @@ export const useUpdateUserMutation = () => {
 
       useAuthStore.getState().setUser(data);
       toast.success('Profile updated successfully!');
-      queryClient.invalidateQueries({
+      await queryClient.invalidateQueries({
         queryKey: ['users'],
       });
     },
@@ -28,7 +29,7 @@ export const useDeleteUserMutation = () => {
       if (!useAuthStore.getState().user?.isAdmin) {
         useAuthStore.getState().logout();
       }
-      queryClient.invalidateQueries({
+     await queryClient.invalidateQueries({
         queryKey: ['users'],
       });
     },

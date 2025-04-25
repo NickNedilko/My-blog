@@ -24,6 +24,13 @@ export const getPostComments = async (
   });
 };
 
+export const getComments = async () => {
+  return sendRequest(buildUrl(['comments', 'get-comments']), {
+    method: 'GET',
+  });
+};
+
+
 export const likeComment = async (
   commentId: string
 ): Promise<PostCommentResponse[]> => {

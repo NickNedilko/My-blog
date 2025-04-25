@@ -19,7 +19,7 @@ export interface Post {
   imageUrl?: string;
   createdAt: Date;
   updatedAt: Date;
-  commentsCount: number;
+  commentCount: number;
   slug: string;
   viewsCount: number;
   userId: number;
