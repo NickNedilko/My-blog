@@ -87,9 +87,26 @@ export const updateComment = async (req, res) => {
 }
     
 export const getAllComments = async (req, res) => {
-    const comments = await Comment.find().populate("user", 'userName avatarUrl').sort({ createdAt: -1 }).limit(6);
+    const limit = parseInt(req.query.limit) || 5;
+    const skip = (req.query.page - 1) * limit || 0;
+    const comments = await Comment.find().populate("user", 'userName avatarUrl').sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit);
     if (!comments) {
         throw httpError(404, "Comments not found");
     }
-    res.status(200).json(comments);
+    const commentsCount = await Comment.countDocuments();
+
+     const now = new Date();
+    
+        const oneMonthAgo = new Date(
+          now.getFullYear(),
+          now.getMonth() - 1,
+          now.getDate()
+        );
+    
+        const lastMonthComments = await Comment.countDocuments({
+          createdAt: { $gte: oneMonthAgo },
+        });
+    res.status(200).json({comments, commentsCount, lastMonthComments});
 }

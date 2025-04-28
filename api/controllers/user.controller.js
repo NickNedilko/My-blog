@@ -1,6 +1,7 @@
 import User from "../models/user.model.js";
 import bcrypt from "bcryptjs";
 import { httpError } from "../utils/http-error.js";
+import Comment from "../models/comment.model.js";
 
 export const getCurrentUser = async (req, res)=>{
     const user = req.user;
@@ -69,15 +70,15 @@ export const updateUser = async (req, res) => {
 };
 
 export const deleteUser = async (req, res) => {
- 
     const _id = req.params.id;
    
-    
     const deletedUser = await User.findByIdAndDelete(_id);
 
     if (!deletedUser) {
         throw httpError(404, "User not found");    
     }
+
+    await Comment.deleteMany({ user: _id });
 
     res.json({
         message: "User deleted successfully",
