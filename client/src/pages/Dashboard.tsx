@@ -6,6 +6,7 @@ import { MyPosts } from '../components/shared/dahsboard-my-posts';
 import { useAuthStore } from '../store/auth-store';
 import { DashboardPosts } from '../components/shared/dashbord-posts';
 import { DashboardUsers } from '../components/shared/dashboard-users';
+import { DashboardComments } from '../components/shared/dashboard-comments';
 
 export default function Dashboard() {
   const { user } = useAuthStore();
@@ -14,7 +15,7 @@ export default function Dashboard() {
   const slug = searchParams.get('slug');
 
   return (
-    <div className="min-h-screen flex flex-col md:flex-row">
+    <div className="min-h-screen flex flex-col  md:flex-row">
       <div>
         <DashboardSidebar />
       </div>
@@ -24,6 +25,7 @@ export default function Dashboard() {
       {tab === 'edit-post' && <CreatePost slug={slug as string} />}
       {tab === 'posts' && user?.isAdmin && <DashboardPosts />}
       {tab === 'users' && user?.isAdmin && <DashboardUsers />}
+      {tab === 'comments' && user?.isAdmin && <DashboardComments />}
     </div>
   );
 }

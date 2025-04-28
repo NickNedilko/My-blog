@@ -26,6 +26,17 @@ export interface Post {
   user: User;
 }
 
+export interface Comment {
+  _id: string;
+  content: string;
+  post: string;
+  user: User;
+  createdAt: Date;
+  updatedAt: Date;
+  likes: string[];
+  numberOfLikes: number;
+}
+
 export interface PostCommentResponse {
   _id: string;
   content: string;

@@ -13,7 +13,7 @@ import { useState } from 'react';
 import { getComments } from '../services/commentApi';
 
 const Posts = () => {
-  const limit = 4;
+  const limit = 5;
   const [page, setPage] = useState(1);
   const { user } = useAuthStore();
   const { data, isLoading } = useQuery({
@@ -22,8 +22,8 @@ const Posts = () => {
   });
 
   const { data: comments } = useQuery({
-    queryKey: ['comments'],
-    queryFn: () => getComments(),
+    queryKey: ['comments', page, limit],
+    queryFn: () => getComments({ page, limit }),
   });
 
   return (
@@ -85,7 +85,7 @@ const Posts = () => {
           />
           <CommentsBlock
             // @ts-ignore
-            items={comments}
+            items={comments?.comments || []}
             isLoading={isLoading}
           />
         </div>

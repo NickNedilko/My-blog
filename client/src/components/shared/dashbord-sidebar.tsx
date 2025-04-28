@@ -8,7 +8,7 @@ import { FaUser } from 'react-icons/fa';
 import { MdOutlineCreate } from 'react-icons/md';
 import { FaClipboardList, FaUsers } from 'react-icons/fa';
 import { HiClipboardDocumentList } from 'react-icons/hi2';
-import { FaArrowRightFromBracket } from 'react-icons/fa6';
+import { FaArrowRightFromBracket, FaRegComments } from 'react-icons/fa6';
 import { Link, useSearchParams } from 'react-router-dom';
 import { useLogoutMutation } from '../../mutations/auth-mutation';
 import { useAuthStore } from '../../store/auth-store';
@@ -50,27 +50,37 @@ export const DashboardSidebar = () => {
               My Posts
             </SidebarItem>
           </Link>
+
           {user?.isAdmin && (
-            <Link to={`/dashboard?tab=posts`}>
-              <SidebarItem
-                active={tab === 'posts'}
-                icon={HiClipboardDocumentList}
-                labelColor="dark"
-              >
-                Posts
-              </SidebarItem>
-            </Link>
-          )}
-          {user?.isAdmin && (
-            <Link to={`/dashboard?tab=users`}>
-              <SidebarItem
-                active={tab === 'users'}
-                icon={FaUsers}
-                labelColor="dark"
-              >
-                Users
-              </SidebarItem>
-            </Link>
+            <>
+              <Link to={`/dashboard?tab=users`}>
+                <SidebarItem
+                  active={tab === 'users'}
+                  icon={FaUsers}
+                  labelColor="dark"
+                >
+                  Users
+                </SidebarItem>
+              </Link>
+              <Link to={`/dashboard?tab=posts`}>
+                <SidebarItem
+                  active={tab === 'posts'}
+                  icon={HiClipboardDocumentList}
+                  labelColor="dark"
+                >
+                  Posts
+                </SidebarItem>
+              </Link>
+              <Link to={`/dashboard?tab=comments`}>
+                <SidebarItem
+                  active={tab === 'comments'}
+                  icon={FaRegComments}
+                  labelColor="dark"
+                >
+                  Commets
+                </SidebarItem>
+              </Link>
+            </>
           )}
 
           <SidebarItem

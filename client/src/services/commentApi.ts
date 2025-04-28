@@ -1,10 +1,21 @@
-import { PostCommentResponse } from '../types';
+import { Comment, PostCommentResponse } from '../types';
 import { buildUrl, sendRequest } from './instance';
 
 export type CommentPayload = {
   post: string;
   content: string;
 };
+
+interface getComment {
+  page?: number;
+  limit?: number;
+}
+
+interface commentsResponse {
+  comments: Comment[];
+  commentsCount: number;
+  lastMonthComments: number;
+}
 
 export const createComment = async (data: CommentPayload) => {
   return sendRequest(buildUrl(['comments', 'add-comment']), {
@@ -24,8 +35,11 @@ export const getPostComments = async (
   });
 };
 
-export const getComments = async () => {
-  return sendRequest(buildUrl(['comments', 'get-comments']), {
+export const getComments = async ({
+  page = 1,
+  limit = 5,
+}: getComment): Promise<commentsResponse> => {
+  return sendRequest(buildUrl(['comments', 'get-comments'], { page, limit }), {
     method: 'GET',
   });
 };
