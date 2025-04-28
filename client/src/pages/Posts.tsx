@@ -21,7 +21,7 @@ const Posts = () => {
     queryFn: () => getAllPosts(page),
   });
 
-  const {data:comments} = useQuery({
+  const { data: comments } = useQuery({
     queryKey: ['comments'],
     queryFn: () => getComments(),
   });

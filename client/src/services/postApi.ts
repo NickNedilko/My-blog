@@ -7,7 +7,7 @@ interface AllPostsResponse {
   totalPosts: number;
 }
 
-export const createPost = async (data: Partial<Post>) => {
+export const createPost = async (data: Partial<Post>): Promise<Post> => {
   return sendRequest(buildUrl(['posts', 'add-post']), {
     method: 'POST',
     data,
@@ -27,7 +27,6 @@ export const getAllPosts = async (
 };
 
 export const getOnePost = async (slug: string): Promise<Post> => {
-  console.log(slug);
   return sendRequest(buildUrl(['posts', slug]), {
     method: 'GET',
   });
@@ -46,8 +45,16 @@ export const updatePost = async (slug: string, data: Partial<Post>) => {
   });
 };
 
-export const deletePost = async (slug: string): Promise<Post[]> => {
+export const deletePost = async (slug: string) => {
   return sendRequest(buildUrl(['posts', 'delete-post', slug]), {
     method: 'DELETE',
+  });
+};
+
+export const getPostsByCategory = async (
+  category: string
+): Promise<AllPostsResponse> => {
+  return sendRequest(buildUrl(['posts', 'get-posts'], { category }), {
+    method: 'GET',
   });
 };

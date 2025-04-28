@@ -47,7 +47,7 @@ export const CreatePost: FC<CreatePostProps> = ({ slug }) => {
     await uploadImage(file as File);
   };
 
-  const handleSubmit = async(e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const postData: Partial<Post> = {
       title,
@@ -58,11 +58,11 @@ export const CreatePost: FC<CreatePostProps> = ({ slug }) => {
     };
 
     if (slug && post) {
-     updatePost({ slug, data: postData });
+      updatePost({ slug, data: postData });
     } else {
-     createPost(postData);
+      createPost(postData);
     }
-     navigate('/dashboard?tab=my-posts');
+    navigate('/dashboard?tab=my-posts');
   };
 
   useEffect(() => {

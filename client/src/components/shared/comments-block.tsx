@@ -44,9 +44,10 @@ export const CommentsBlock: FC<CommentsBlockProps> = ({
                 ) : (
                   <>
                     <p className="text-sm font-semibold text-gray-900 dark:text-white">
-                      {obj.user.userName || 'Deleted author'}  <span className="text-xs text-gray-400">
-                                    {moment(obj.createdAt).fromNow()}
-                                  </span>
+                      {obj.user.userName || 'Deleted author'}{' '}
+                      <span className="text-xs text-gray-400">
+                        {moment(obj.createdAt).fromNow()}
+                      </span>
                     </p>
                     <p className="text-sm text-gray-600 dark:text-gray-400">
                       {obj.content}

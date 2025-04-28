@@ -86,7 +86,7 @@ export const Post: FC<PostProps> = ({
         <UserInfo {...user} additionalText={createdAt} />
         <div className="pl-10">
           <h2
-            className={`text-2xl ${isFullPost ? 'text-4xl font-extrabold' : ''} mb-2`}
+            className={`text-2xl line-clamp-2 ${isFullPost ? 'text-4xl font-extrabold' : ''} mb-2`}
           >
             {isFullPost ? title : <Link to={`/posts/${slug}`}>{title}</Link>}
           </h2>

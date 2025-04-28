@@ -30,7 +30,6 @@ export const getComments = async () => {
   });
 };
 
-
 export const likeComment = async (
   commentId: string
 ): Promise<PostCommentResponse[]> => {

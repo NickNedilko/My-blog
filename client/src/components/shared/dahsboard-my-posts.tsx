@@ -22,8 +22,13 @@ export const MyPosts = () => {
   if (posts?.length === 0) {
     return (
       <div className="w-full flex flex-col items-center justify-center px-4 md:px-8 lg:px-40">
-        <img src={noPosts} alt="No posts"  />
-        <p className="text-gray-500 text-2xl text-center">You have no posts yet. <Link to="?tab=create-post"><span className="text-[#4361ee]">Create one</span></Link></p>
+        <img src={noPosts} alt="No posts" />
+        <p className="text-gray-500 text-2xl text-center">
+          You have no posts yet.{' '}
+          <Link to="?tab=create-post">
+            <span className="text-[#4361ee]">Create one</span>
+          </Link>
+        </p>
       </div>
     );
   }

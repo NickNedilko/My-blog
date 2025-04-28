@@ -3,7 +3,10 @@ import { AiFillLike } from 'react-icons/ai';
 import { useQuery } from '@tanstack/react-query';
 import { getUserById } from '../../services/userApi';
 import { FC, useState } from 'react';
-import { useEditCommentMutation, useLikeCommentMutation } from '../../mutations/comment-mutation';
+import {
+  useEditCommentMutation,
+  useLikeCommentMutation,
+} from '../../mutations/comment-mutation';
 import { useAuthStore } from '../../store/auth-store';
 import { Button, Textarea } from 'flowbite-react';
 
@@ -23,7 +26,7 @@ interface CommentProps {
   id: string;
 }
 
-export const Comment: FC<CommentProps> = ({ comment, id,  onDelete }) => {
+export const Comment: FC<CommentProps> = ({ comment, id, onDelete }) => {
   const [isEdit, setIsEdit] = useState(false);
   const [commentContent, setCommentContent] = useState(comment.content);
   const { user: currentUser } = useAuthStore();
@@ -33,7 +36,7 @@ export const Comment: FC<CommentProps> = ({ comment, id,  onDelete }) => {
   });
 
   const { mutate: likeComment } = useLikeCommentMutation();
-  const {mutate: editComment} = useEditCommentMutation();
+  const { mutate: editComment } = useEditCommentMutation();
 
   const handleLike = (commentId: string) => {
     if (!user) return;
@@ -47,7 +50,10 @@ export const Comment: FC<CommentProps> = ({ comment, id,  onDelete }) => {
   };
 
   return (
-    <div key={comment._id} className="flex p-4 border-b dark:border-gray-600 text-sm">
+    <div
+      key={comment._id}
+      className="flex p-4 border-b dark:border-gray-600 text-sm"
+    >
       <div className="flex-shrink-0 mr-3">
         <img
           src={user?.avatarUrl}
@@ -84,7 +90,7 @@ export const Comment: FC<CommentProps> = ({ comment, id,  onDelete }) => {
             <div className="flex justify-between items-center mt-3">
               <div className="flex items-center justify-between gap-2">
                 <Button
-                    outline
+                  outline
                   onClick={() => handleEdit(comment._id)}
                   type="submit"
                   className=" bg-gradient-to-r from-blue-500 to-pink-500  

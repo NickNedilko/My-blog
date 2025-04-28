@@ -23,7 +23,6 @@ export const CommentSection: FC<CommentSectionProps> = ({ postId }) => {
 
   const { mutate: deleteComment } = useDeleteCommentMutation();
 
-
   const handleDelete = () => {
     if (commentId) {
       deleteComment(commentId);
