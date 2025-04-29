@@ -5,9 +5,10 @@ import {
   SidebarItemGroup,
 } from 'flowbite-react';
 import { FaUser } from 'react-icons/fa';
+
 import { MdOutlineCreate } from 'react-icons/md';
 import { FaClipboardList, FaUsers } from 'react-icons/fa';
-import { HiClipboardDocumentList } from 'react-icons/hi2';
+import { HiClipboardDocumentList, HiChartPie } from 'react-icons/hi2';
 import { FaArrowRightFromBracket, FaRegComments } from 'react-icons/fa6';
 import { Link, useSearchParams } from 'react-router-dom';
 import { useLogoutMutation } from '../../mutations/auth-mutation';
@@ -22,6 +23,15 @@ export const DashboardSidebar = () => {
     <Sidebar className="w-full md:w-56">
       <SidebarItems>
         <SidebarItemGroup className="flex flex-col md:gap-2">
+          <Link to={`/dashboard?tab=dash`}>
+            <SidebarItem
+              active={tab === 'dash'}
+              icon={HiChartPie}
+              labelColor="dark"
+            >
+              Dashboard
+            </SidebarItem>
+          </Link>
           <Link to={`/dashboard?tab=profile`}>
             <SidebarItem
               active={tab === 'profile'}

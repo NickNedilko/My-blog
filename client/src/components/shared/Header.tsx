@@ -79,7 +79,7 @@ export default function Header() {
         <NavbarToggle />
       </div>
       <NavbarCollapse>
-        <NavbarLink
+        {/* <NavbarLink
           className={
             pathname === '/'
               ? 'text-blue-500  dark:text-white'
@@ -98,16 +98,16 @@ export default function Header() {
           as="div"
         >
           <Link to="/about">About</Link>
-        </NavbarLink>
+        </NavbarLink> */}
         <NavbarLink
           className={
-            pathname === '/posts'
+            pathname === '/'
               ? 'text-blue-500  dark:text-white'
               : 'text-gray-600'
           }
           as="div"
         >
-          <Link to="/posts">Posts</Link>
+          <Link to="/">Posts</Link>
         </NavbarLink>
       </NavbarCollapse>
     </Navbar>

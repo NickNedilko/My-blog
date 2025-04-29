@@ -36,7 +36,7 @@ export const DashboardComments = () => {
                 <TableHeadCell>Comment content</TableHeadCell>
                 <TableHeadCell>Number of likes</TableHeadCell>
                 <TableHeadCell>PostId</TableHeadCell>
-                <TableHeadCell>UserId</TableHeadCell>
+                <TableHeadCell>UserName</TableHeadCell>
                 <TableHeadCell>
                   <span className="sr-only">Delete</span>
                 </TableHeadCell>

@@ -5,6 +5,7 @@ interface AllPostsResponse {
   tags: string[];
   posts: Post[];
   totalPosts: number;
+  lastMonthPosts: number;
 }
 
 export const createPost = async (data: Partial<Post>): Promise<Post> => {

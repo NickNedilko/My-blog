@@ -7,6 +7,7 @@ import { useAuthStore } from '../store/auth-store';
 import { DashboardPosts } from '../components/shared/dashbord-posts';
 import { DashboardUsers } from '../components/shared/dashboard-users';
 import { DashboardComments } from '../components/shared/dashboard-comments';
+import { DashboardStats } from '../components/shared/dashboard-statistics';
 
 export default function Dashboard() {
   const { user } = useAuthStore();
@@ -26,6 +27,7 @@ export default function Dashboard() {
       {tab === 'posts' && user?.isAdmin && <DashboardPosts />}
       {tab === 'users' && user?.isAdmin && <DashboardUsers />}
       {tab === 'comments' && user?.isAdmin && <DashboardComments />}
+      {tab === 'dash' && user?.isAdmin && <DashboardStats />}
     </div>
   );
 }
