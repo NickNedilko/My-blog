@@ -36,19 +36,20 @@ export const createPost = async (req, res) => {
 export const getposts = async (req, res, next) => {
   const limit = parseInt(req.query.limit) || 4;
   const skip = (req.query.page - 1) * limit || 0;
-  const sortDirection = req.query.order === 'asc' ? 1 : -1;
+  const sortField = req.query.sortBy === 'views' ? 'viewsCount' : 'updatedAt';
+  const sortDirection = req.query.sort === 'asc' ? 1 : -1;
     const posts = await Post.find({
       ...(req.query.userId && { userId: req.query.userId }),
       ...(req.query.category && { category: req.query.category }),
       ...(req.query.postId && { _id: req.query.postId }),
-      ...(req.query.searchTerm && {
+      ...(req.query.search && {
         $or: [
-          { title: { $regex: req.query.searchTerm, $options: 'i' } },
-          { content: { $regex: req.query.searchTerm, $options: 'i' } },
+          { title: { $regex: req.query.search, $options: 'i' } },
+          { content: { $regex: req.query.search, $options: 'i' } },
         ],
       }),
     }).populate('user')
-      .sort({ updatedAt: sortDirection })
+      .sort({ [sortField]: sortDirection })
       .skip(skip)
       .limit(limit);
      if (!posts) {
