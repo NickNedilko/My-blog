@@ -7,12 +7,15 @@ import { PrivateRoute, RestrictedRoute } from './lib/redirect-routes';
 import { NotFound } from './pages/not-found';
 import Posts from './pages/Posts';
 import FullPost from './pages/FullPost';
+import Search from './pages/Search';
 
 export default function App() {
   return (
     <Routes>
       <Route path="/" element={<SharedLayout />}>
         <Route index element={<Posts />} />
+        <Route path="/search" element={<Search />} />
+
         <Route path="/posts/:slug" element={<FullPost />} />
         <Route
           path="/sign-up"

@@ -11,7 +11,12 @@ import {
   NavbarToggle,
   TextInput,
 } from 'flowbite-react';
-import { Link, useLocation } from 'react-router-dom';
+import {
+  Link,
+  useLocation,
+  useNavigate,
+  useSearchParams,
+} from 'react-router-dom';
 import { AiOutlineSearch } from 'react-icons/ai';
 
 import { FaMoon, FaSun } from 'react-icons/fa';
@@ -19,19 +24,39 @@ import { Logo } from './logo';
 import { useAuthStore } from '../../store/auth-store';
 import { useThemeStore } from '../../store/theme';
 import { useLogoutMutation } from '../../mutations/auth-mutation';
+import { useEffect, useState } from 'react';
 
 export default function Header() {
+  const navigate = useNavigate();
   const { pathname } = useLocation();
   const { isLoggedIn, user } = useAuthStore();
   const { toggleTheme, theme } = useThemeStore();
   const { mutate: logout } = useLogoutMutation();
 
+  const [search, setSearch] = useState('');
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  useEffect(() => {
+    const searchUrl = searchParams.get('search');
+    if (searchUrl) {
+      setSearch(searchUrl);
+    }
+  }, [searchParams]);
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setSearchParams({ search });
+    navigate(`/search?search=${search}`);
+  };
+
   return (
     <Navbar className="border-b-2 md:px-30">
       <Logo className="mr-3 text-xl md:text-2xl h-6 sm:h-9" />
-      <form>
+      <form className="flex items-center" onSubmit={handleSubmit}>
         <TextInput
           placeholder="Search..."
+          onChange={(e) => setSearch(e.target.value)}
+          value={search}
           type="text"
           rightIcon={AiOutlineSearch}
           className="hidden lg:inline"

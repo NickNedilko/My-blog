@@ -20,11 +20,25 @@ export const createPost = async (data: Partial<Post>): Promise<Post> => {
 
 export const getAllPosts = async (
   page: number,
-  limit: number = 4
+  limit: number = 4,
+  search?: string,
+  category?: string,
+  sort?: string,
+  sortBy?: string
 ): Promise<AllPostsResponse> => {
-  return sendRequest(buildUrl(['posts', 'get-posts'], { page, limit }), {
-    method: 'GET',
-  });
+  return sendRequest(
+    buildUrl(['posts', 'get-posts'], {
+      page,
+      limit,
+      search: search || '',
+      category: category || '',
+      sort: sort || '',
+      sortBy: sortBy || '',
+    }),
+    {
+      method: 'GET',
+    }
+  );
 };
 
 export const getOnePost = async (slug: string): Promise<Post> => {

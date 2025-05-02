@@ -15,10 +15,15 @@ import { getComments } from '../services/commentApi';
 const Posts = () => {
   const limit = 5;
   const [page, setPage] = useState(1);
+
+  const [tab, setTab] = useState('new');
   const { user } = useAuthStore();
+  const sortBy = tab === 'new' ? 'createdAt' : 'views';
+
   const { data, isLoading } = useQuery({
-    queryKey: ['posts', page],
-    queryFn: () => getAllPosts(page),
+    queryKey: ['posts', page, sortBy],
+    queryFn: () =>
+      getAllPosts(page, limit, undefined, undefined, undefined, sortBy),
   });
 
   const { data: comments } = useQuery({
@@ -28,9 +33,21 @@ const Posts = () => {
 
   return (
     <div className="w-full px-4 md:px-8 lg:px-40">
-      <Tabs aria-label="Tabs with underline" variant="underline">
-        <TabItem active title="New" icon={FaRegNewspaper} />
-        <TabItem active title="Popular" icon={TbChartBarPopular} />
+      <Tabs
+        onActiveTabChange={(tabIndex) => {
+          const selectedTab = tabIndex === 0 ? 'new' : 'popular';
+          setTab(selectedTab);
+          setPage(1);
+        }}
+        aria-label="Tabs with underline"
+        variant="underline"
+      >
+        <TabItem active={tab === 'new'} title="New" icon={FaRegNewspaper} />
+        <TabItem
+          active={tab === 'popular'}
+          title="Popular"
+          icon={TbChartBarPopular}
+        />
       </Tabs>
       <div className="flex flex-wrap mt-4">
         <div className="w-full md:w-2/3 flex flex-col gap-6">

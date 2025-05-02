@@ -128,7 +128,7 @@ export const CreatePost: FC<CreatePostProps> = ({ slug }) => {
             value={category}
             onChange={(e) => setCategory(e.target.value)}
           >
-            <option value="Uncotegorized">Select category</option>
+            <option value="Uncotegorized">Uncategorized</option>
             <option value="Development">Development</option>
             <option value="Sport">Sport</option>
             <option value="Films">Films</option>
