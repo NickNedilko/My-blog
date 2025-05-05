@@ -1,6 +1,5 @@
 import { Outlet } from 'react-router-dom';
 import Header from './Header';
-import { jwtDecode } from 'jwt-decode';
 import { Footerr } from './footer';
 import { useQuery } from '@tanstack/react-query';
 import { getUser } from '../../services/userApi';
@@ -17,12 +16,8 @@ export default function SharedLauot() {
 
   useEffect(() => {
     if (user) {
-      const token = localStorage.getItem('authToken');
-      if (token) {
-        const decoded: any = jwtDecode(token);
-        useAuthStore.getState().setLoggedIn();
-        useAuthStore.getState().setUser({ ...user, isAdmin: decoded.isAdmin });
-      }
+      useAuthStore.getState().setLoggedIn();
+      useAuthStore.getState().setUser({ ...user });
     }
   }, [user]);
 

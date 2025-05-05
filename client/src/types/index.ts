@@ -7,7 +7,6 @@ export interface User {
   avatarUrl: string;
   createdAt: Date;
   updatedAt: Date;
-  token: string;
 }
 
 export interface Post {

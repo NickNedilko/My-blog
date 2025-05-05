@@ -5,18 +5,14 @@ import { app } from '../../firebase';
 import { useMutation } from '@tanstack/react-query';
 import { signWithGoogle } from '../../services/authApi';
 import { useAuthStore } from '../../store/auth-store';
-import { setAuthHeader } from '../../lib/jwt';
 
 export const OAuth = () => {
   const { mutate, status } = useMutation({
     mutationFn: signWithGoogle,
     onSuccess: async (data) => {
-      console.log(data);
-      const { token, ...user } = data;
-      useAuthStore.getState().setToken(token as string);
+      const { ...user } = data;
       useAuthStore.getState().setUser(user);
-      useAuthStore.getState().login(token as string);
-      setAuthHeader(token as string);
+      useAuthStore.getState().setLoggedIn();
     },
   });
 

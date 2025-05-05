@@ -1,4 +1,3 @@
-import { setAuthHeader } from '../lib/jwt';
 import { User } from '../types';
 import { buildUrl, sendRequest } from './instance';
 
@@ -9,17 +8,9 @@ interface UsersResponse {
 }
 
 export const getUser = (): Promise<User> => {
-  const token = localStorage.getItem('authToken');
-
-  if (!token) {
-    return Promise.reject(new Error('No token found'));
-  }
-  setAuthHeader(token);
   return sendRequest(buildUrl(['user', 'get-user']), {
     method: 'GET',
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
+    withCredentials: true,
   });
 };
 
@@ -27,12 +18,14 @@ export const updateUser = (data: Partial<User>) => {
   return sendRequest(buildUrl(['user', 'update-user']), {
     method: 'PATCH',
     data,
+    withCredentials: true,
   });
 };
 
 export const deleteUser = (id: string) => {
   return sendRequest(buildUrl(['user', 'delete-user', id]), {
     method: 'DELETE',
+    withCredentials: true,
   });
 };
 
@@ -42,11 +35,13 @@ export const getUsers = async (
 ): Promise<UsersResponse> => {
   return sendRequest(buildUrl(['user', 'get-users'], { page, limit }), {
     method: 'GET',
+    withCredentials: true,
   });
 };
 
 export const getUserById = async (id: string): Promise<User> => {
   return sendRequest(buildUrl(['user', id]), {
     method: 'GET',
+    withCredentials: true,
   });
 };
