@@ -5,17 +5,17 @@ import Comment from "../models/comment.model.js";
 
 export const getCurrentUser = async (req, res)=>{
     const user = req.user;
-    const { _id, email, userName, avatarUrl } = user;
-    if (!user) {
+     if (!user) {
         throw httpError(401, "Unauthorized")    
     }
+    const { _id, email, userName, avatarUrl, isAdmin } = user;
     res.json({
         _id,
         email,
         userName,
         avatarUrl,
+        isAdmin
     })
-
 } 
 
 

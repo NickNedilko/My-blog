@@ -8,7 +8,6 @@ import { httpError } from "../utils/http-error.js";
 export const signup = async (req, res) => {
   
     const passwordHash = await bcrypt.hash(req.body.password, 10);
-
     const newUser = new User({
         email: req.body.email,
         userName: req.body.userName,
@@ -21,14 +20,14 @@ export const signup = async (req, res) => {
         _id: user._id,
         isAdmin: user.isAdmin
     });
-     
-    await User.findByIdAndUpdate(user._id, {token});
 
     const { passwordHash: password, ...userData } = user._doc;
 
-    res.json({
+    res.cookie('authtoken', token, {
+        httpOnly: true,
+        secure: false,
+    }).json({
         ...userData,
-        token
     });
 };
 
@@ -50,23 +49,26 @@ export const signin = async (req, res) => {
         isAdmin: user.isAdmin
     });
 
-    await User.findByIdAndUpdate(user._id, {token});
     const { password, ...userData } = user._doc;
 
-    res.json({
+    res.cookie('authtoken', token, {
+        httpOnly: true,
+        secure: false,
+    }).json({
         ...userData,
-        token
     });
 }
 
 
 export const logout = async (req, res) => {
-    const { _id } = req.user;
-  
-    const user = await User.findByIdAndUpdate(_id, { token: '' }, { new: true });
+    const user = req.user;
     if (!user) {
          throw httpError(404, 'User not found')
     }
+    res.clearCookie('authtoken', {
+        httpOnly: true,
+        secure: false,
+    });
     res.json({
         message: 'Logout succes'
     })
@@ -86,22 +88,25 @@ export const googleAuth = async (req, res) => {
             _id: user._id,
             isAdmin: user.isAdmin
         });
-        await User.findByIdAndUpdate(user._id, {token});
         const { password, ...userData } = user._doc;
-        res.json({
-            ...userData,
-            token
+        res.cookie('authtoken', token, {
+            httpOnly: true,
+            secure: false,
+        }).json({
+            ...userData
         });
     } else {
         const token = createToken({
             _id: user._id,
             isAdmin: user.isAdmin
         });
-        await User.findByIdAndUpdate(user._id, {token});
         const { password, ...userData } = user._doc;
-        res.json({
+        res.cookie('authtoken', token, {
+            httpOnly: true,
+            secure: false,
+        }).json({
             ...userData,
-            token
-        }); 
+        });
+        
     }
 }
