@@ -1,6 +1,8 @@
 import { FaHashtag } from 'react-icons/fa6';
 import { FC } from 'react';
 import { ListGroup, ListGroupItem } from 'flowbite-react';
+import { Title } from './title';
+import { useTranslation } from 'react-i18next';
 
 interface TagsBlockProps {
   items: string[];
@@ -8,9 +10,10 @@ interface TagsBlockProps {
 }
 
 export const TagsBlock: FC<TagsBlockProps> = ({ items, isLoading = true }) => {
+  const { t } = useTranslation();
   return (
     <div className="p-4 dark:bg-slate-800 rounded shadow-md">
-      <h3 className="text-lg font-semibold mb-3">Теги</h3>
+      <Title text={t('titles.tags')} size="sm" className="mb-4" />
       <ListGroup>
         {(isLoading ? Array.from({ length: 5 }) : items).map((name, i) => (
           <ListGroupItem

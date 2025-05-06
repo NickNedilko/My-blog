@@ -12,6 +12,7 @@ export const createPost = async (data: Partial<Post>): Promise<Post> => {
   return sendRequest(buildUrl(['posts', 'add-post']), {
     method: 'POST',
     data,
+    withCredentials: true,
     headers: {
       'Content-Type': 'application/json',
     },
@@ -50,6 +51,7 @@ export const getOnePost = async (slug: string): Promise<Post> => {
 export const getMyPosts = async (): Promise<Post[]> => {
   return sendRequest(buildUrl(['posts', 'my-posts']), {
     method: 'GET',
+    withCredentials: true,
   });
 };
 
@@ -57,12 +59,14 @@ export const updatePost = async (slug: string, data: Partial<Post>) => {
   return sendRequest(buildUrl(['posts', 'update-post', slug]), {
     method: 'PATCH',
     data,
+    withCredentials: true,
   });
 };
 
 export const deletePost = async (slug: string) => {
   return sendRequest(buildUrl(['posts', 'delete-post', slug]), {
     method: 'DELETE',
+    withCredentials: true,
   });
 };
 

@@ -6,9 +6,11 @@ import { Link } from 'react-router-dom';
 import { Logo } from '../components/shared/logo';
 import { OAuth } from '../components/shared/OAuth';
 import { useSignUpMutation } from '../mutations/auth-mutation';
+import { useTranslation } from 'react-i18next';
 
 export default function SignUp() {
   const { mutate: signup, status } = useSignUpMutation();
+  const { t } = useTranslation();
 
   const form = useForm({
     mode: 'onChange',
@@ -37,30 +39,29 @@ export default function SignUp() {
                 <Logo className="text-4xl" />
                 <div className="flex gap-2 items-center justify-center">
                   <p className="text-sm mt-5 text-center">
-                    You can sign up with your email, username and password or
-                    with google
+                    {t('messages.sign_in_up')}
                   </p>
                   <img src={phoneImg} alt="phone-icon" width={60} height={60} />
                 </div>
               </div>
               <FormInput
                 name="userName"
-                label="UserName"
-                placeholder="name"
+                label={t('forms.username')}
+                placeholder={t('placeholders.username')}
                 type="text"
                 required
               />
               <FormInput
                 name="email"
-                label="Email"
-                placeholder="example@company.com"
+                label={t('forms.email')}
+                placeholder={t('placeholders.email')}
                 type="email"
                 required
               />
               <FormInput
                 name="password"
-                label="Password"
-                placeholder="password"
+                label={t('forms.password')}
+                placeholder={t('placeholders.password')}
                 type="password"
                 required
               />
@@ -71,17 +72,17 @@ export default function SignUp() {
                 {status === 'pending' ? (
                   <>
                     <Spinner size="sm" />
-                    <span className="ml-4">Loading...</span>
+                    <span className="ml-4">{t('buttons.loading')}</span>
                   </>
                 ) : (
-                  'Sign Up'
+                  t('buttons.sign_up')
                 )}
               </Button>
               <OAuth />
               <div className="flex gap-2 items-center justify-center">
-                <span>Have an account?</span>
+                <span>{t('messages.already_have_account')}</span>
                 <Link to="/sign-in" className="text-blue-500">
-                  Sign In
+                  {t('navigation.sign_in')}
                 </Link>
               </div>
             </form>

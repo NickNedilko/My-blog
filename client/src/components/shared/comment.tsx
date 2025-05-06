@@ -9,6 +9,7 @@ import {
 } from '../../mutations/comment-mutation';
 import { useAuthStore } from '../../store/auth-store';
 import { Button, Textarea } from 'flowbite-react';
+import { useTranslation } from 'react-i18next';
 
 interface CommentProps {
   onDelete?: () => void;
@@ -30,6 +31,7 @@ export const Comment: FC<CommentProps> = ({ comment, id, onDelete }) => {
   const [isEdit, setIsEdit] = useState(false);
   const [commentContent, setCommentContent] = useState(comment.content);
   const { user: currentUser } = useAuthStore();
+  const { t } = useTranslation();
   const { data: user } = useQuery({
     queryKey: ['user', id],
     queryFn: () => getUserById(id),
@@ -83,7 +85,7 @@ export const Comment: FC<CommentProps> = ({ comment, id, onDelete }) => {
             <Textarea
               value={commentContent}
               onChange={(e) => setCommentContent(e.target.value)}
-              placeholder="Write a comment..."
+              placeholder={t('placeholders.write_comment')}
               rows={3}
               maxLength={200}
             />
@@ -96,7 +98,7 @@ export const Comment: FC<CommentProps> = ({ comment, id, onDelete }) => {
                   className=" bg-gradient-to-r from-blue-500 to-pink-500  
                                   transition-all duration-300  hover:from-pink-500 hover:to-blue-500 text-white px-4 py-2 rounded-md mt-2 hover:bg-blue-600"
                 >
-                  Save
+                  {t('buttons.save')}
                 </Button>
                 <Button
                   onClick={() => setIsEdit(!isEdit)}
@@ -104,7 +106,7 @@ export const Comment: FC<CommentProps> = ({ comment, id, onDelete }) => {
                   type="submit"
                   className=" dark:text-white px-4 py-2 rounded-md mt-2 hover:bg-gradient-to-r from-blue-500 to-pink-500"
                 >
-                  Cancel
+                  {t('buttons.cancel')}
                 </Button>
               </div>
             </div>
@@ -128,14 +130,14 @@ export const Comment: FC<CommentProps> = ({ comment, id, onDelete }) => {
                 type="button"
                 className="text-gray-500 hover:text-blue-500"
               >
-                Edit
+                {t('buttons.edit')}
               </button>
               <button
                 onClick={onDelete}
                 type="button"
                 className="text-gray-500 hover:text-red-500"
               >
-                Delete
+                {t('buttons.delete')}
               </button>
             </>
           )}

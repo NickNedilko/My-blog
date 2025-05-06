@@ -14,6 +14,7 @@ import { Post } from '../../types';
 import { useQuery } from '@tanstack/react-query';
 import { getOnePost } from '../../services/postApi';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 interface CreatePostProps {
   slug?: string;
@@ -29,12 +30,13 @@ export const CreatePost: FC<CreatePostProps> = ({ slug }) => {
   const [tags, setTags] = useState<string[]>([]);
   const [category, setCategory] = useState<string>('uncategorized');
   const { mutate: createPost } = useCreatePostMutation();
-
+  const { t } = useTranslation();
   const { mutate: updatePost } = useUpdatePostMutation();
 
   const { data: post } = useQuery({
     queryKey: ['post', slug],
     queryFn: () => getOnePost(slug as string),
+    enabled: !!slug,
   });
 
   const handleImageChange = async (
@@ -81,7 +83,7 @@ export const CreatePost: FC<CreatePostProps> = ({ slug }) => {
       className="p-3 max-w-3xl mx-auto min-h-screen md:w-[600px] xl:w-[768px]"
     >
       <Title
-        text={post?.title || 'Create post'}
+        text={post?.title || t('titles.create_post')}
         size="lg"
         className="text-center mb-3"
       />
@@ -105,7 +107,7 @@ export const CreatePost: FC<CreatePostProps> = ({ slug }) => {
           size="sm"
           className="bg-gradient-to-r from-purple-500 to-blue-500 mb-3"
         >
-          Upload image
+          {t('buttons.upload_image')}
         </Button>
       )}
       <FileInput
@@ -121,18 +123,20 @@ export const CreatePost: FC<CreatePostProps> = ({ slug }) => {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             type="text"
-            placeholder="Title"
+            placeholder={t('placeholders.title')}
             required
           />
           <Select
             value={category}
             onChange={(e) => setCategory(e.target.value)}
           >
-            <option value="Uncotegorized">Uncategorized</option>
-            <option value="Development">Development</option>
-            <option value="Sport">Sport</option>
-            <option value="Films">Films</option>
-            <option value="Other">Other</option>
+            <option value="Uncotegorized">
+              {t('categories.uncategorized')}
+            </option>
+            <option value="Development">{t('categories.development')}</option>
+            <option value="Sport">{t('categories.sport')}</option>
+            <option value="Films">{t('categories.films')}</option>
+            <option value="Other">{t('categories.other')}</option>
           </Select>
         </div>
         <TextInput
@@ -140,7 +144,7 @@ export const CreatePost: FC<CreatePostProps> = ({ slug }) => {
           onChange={(e) => setTags((e.target.value as string).split(','))}
           className="flex-1"
           type="text"
-          placeholder="Tags"
+          placeholder={t('placeholders.tags')}
           required
         />
         <div className="border-2 border-gray-300 rounded-lg p-3">
@@ -148,15 +152,16 @@ export const CreatePost: FC<CreatePostProps> = ({ slug }) => {
             value={content}
             onChange={setContent}
             theme="snow"
-            placeholder="Write your post here..."
+            placeholder={t('placeholders.content')}
             className="h-[250px] w-[320px] md:w-full mb-16 md:mb-12"
           />
         </div>
         <Button
           type="submit"
-          className="bg-gradient-to-r from-purple-500 to-blue-500 mt-2"
+          className="bg-gradient-to-r from-blue-500 to-pink-500 
+                transition-all duration-300  hover:from-pink-500 hover:to-blue-500 mt-2"
         >
-          {slug ? 'Update Post' : 'Create Post'}
+          {slug ? t('buttons.edit_post') : t('buttons.create_post')}
         </Button>
       </div>
     </form>

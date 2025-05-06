@@ -25,16 +25,27 @@ import { useAuthStore } from '../../store/auth-store';
 import { useThemeStore } from '../../store/theme';
 import { useLogoutMutation } from '../../mutations/auth-mutation';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { UA, GB } from 'country-flag-icons/string/3x2';
+import { LOCALS } from '../../i18n/constants';
 
 export default function Header() {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const { isLoggedIn, user } = useAuthStore();
   const { toggleTheme, theme } = useThemeStore();
+
   const { mutate: logout } = useLogoutMutation();
 
   const [search, setSearch] = useState('');
   const [searchParams, setSearchParams] = useSearchParams();
+  const { t, i18n } = useTranslation();
+
+  const isEnglish = i18n.language === LOCALS.EN;
+  const toggleLanguage = () => {
+    const newLang = isEnglish ? LOCALS.UK : LOCALS.EN;
+    i18n.changeLanguage(newLang);
+  };
 
   useEffect(() => {
     const searchUrl = searchParams.get('search');
@@ -54,7 +65,7 @@ export default function Header() {
       <Logo className="mr-3 text-xl md:text-2xl h-6 sm:h-9" />
       <form className="flex items-center" onSubmit={handleSubmit}>
         <TextInput
-          placeholder="Search..."
+          placeholder={t('placeholders.search')}
           onChange={(e) => setSearch(e.target.value)}
           value={search}
           type="text"
@@ -66,6 +77,12 @@ export default function Header() {
         <AiOutlineSearch size={16} />
       </Button>
       <div className="flex items-center gap-4 md:order-2">
+        <div
+          onClick={toggleLanguage}
+          className="cursor-pointer w-8 h-6"
+          title={isEnglish ? 'Switch to Ukrainian' : 'Switch to English'}
+          dangerouslySetInnerHTML={{ __html: isEnglish ? GB : UA }}
+        />
         <Button
           onClick={() => toggleTheme()}
           color="light"
@@ -86,10 +103,12 @@ export default function Header() {
               </span>
             </DropdownHeader>
             <Link to="/dashboard?tab=profile">
-              <DropdownItem>Profile</DropdownItem>
+              <DropdownItem>{t('headers.profile')}</DropdownItem>
             </Link>
             <DropdownDivider />
-            <DropdownItem onClick={() => logout()}>Sign out</DropdownItem>
+            <DropdownItem onClick={() => logout()}>
+              {t('buttons.sign_out')}
+            </DropdownItem>
           </Dropdown>
         ) : (
           <Link to="/sign-in">
@@ -97,7 +116,7 @@ export default function Header() {
               className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500"
               color="gradient"
             >
-              Login
+              {t('buttons.sign_in')}
             </Button>
           </Link>
         )}
@@ -132,7 +151,7 @@ export default function Header() {
           }
           as="div"
         >
-          <Link to="/">Posts</Link>
+          <Link to="/">{t('navigation.posts')}</Link>
         </NavbarLink>
       </NavbarCollapse>
     </Navbar>

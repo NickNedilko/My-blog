@@ -9,9 +9,11 @@ import {
 } from 'flowbite-react';
 import { BsGithub, BsLinkedin, BsTelegram } from 'react-icons/bs';
 import { Logo } from './logo';
+import { useTranslation } from 'react-i18next';
 
 export function Footerr() {
   const date: number = new Date().getFullYear();
+  const { t } = useTranslation();
   return (
     <Footer container className="border border-t-8 border-teal-500">
       <div className="w-full px-4 md:px-8 lg:px-40">
@@ -45,7 +47,7 @@ export function Footerr() {
         <div className="w-full sm:flex sm:items-center sm:justify-between">
           <FooterCopyright
             href="https://github.com/NickNedilko"
-            by="All rights reserved. Developed by Mykola Nedilko"
+            by={t('messages.copyrights')}
             year={date}
           />
           <div className="mt-4 flex space-x-6 sm:mt-0 sm:justify-center">

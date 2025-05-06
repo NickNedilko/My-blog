@@ -12,6 +12,7 @@ import clsx from 'clsx';
 import { Link } from 'react-router-dom';
 import { UserInfo } from './user-info';
 import { useDeletePostMutation } from '../../mutations/post-mutation';
+import { useTranslation } from 'react-i18next';
 
 interface PostProps {
   id?: string;
@@ -45,18 +46,19 @@ export const Post: FC<PostProps> = ({
   viewsCount,
   commentsCount,
   tags,
-
   children,
   isFullPost,
   isLoading,
   isEditable,
 }) => {
+  const { t } = useTranslation();
+
   if (isLoading) {
     return <div>skeleton</div>;
   }
 
   const { mutate: deletePost } = useDeletePostMutation();
-
+  const categoryKey = category.toLowerCase();
   const onClickRemove = () => {
     deletePost(slug as string);
   };
@@ -69,7 +71,7 @@ export const Post: FC<PostProps> = ({
           <Link to={`/dashboard?tab=edit-post&slug=${slug}`}>
             <MdEdit />
           </Link>
-          <MdOutlineDelete onClick={onClickRemove} />
+          <MdOutlineDelete onClick={onClickRemove} className="cursor-pointer" />
         </div>
       )}
 
@@ -101,7 +103,7 @@ export const Post: FC<PostProps> = ({
           <ul className="flex space-x-6 mt-6 text-sm text-gray-600 dark:text-gray-200">
             <li className="flex items-center space-x-1 opacity-70 hover:opacity-100">
               <MdLabelImportantOutline className="h-5 w-5" />
-              <span>{category}</span>
+              <span>{t(`categories.${categoryKey}`)}</span>
             </li>
             <li className="flex items-center space-x-1 opacity-70 hover:opacity-100">
               <MdRemoveRedEye className="h-5 w-5" />
@@ -115,8 +117,8 @@ export const Post: FC<PostProps> = ({
         </div>
       </div>
       <div className="absolute flex gap-2 justify-center items-center left-4 top-4 bg-slate-100 p-2 text-lg rounded-xl dark:bg-slate-600 text-slate-600 dark:text-slate-200">
-        <MdOutlineCategory className="h-6 w-6 text-slate-600 dark:text-slate-200" />{' '}
-        {category}
+        <MdOutlineCategory className="h-6 w-6 text-slate-600 dark:text-slate-200" />
+        {t(`categories.${categoryKey}`)}
       </div>
     </div>
   );

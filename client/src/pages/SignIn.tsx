@@ -6,9 +6,11 @@ import { Link } from 'react-router-dom';
 import { Logo } from '../components/shared/logo';
 import { OAuth } from '../components/shared/OAuth';
 import { useSignInMutation } from '../mutations/auth-mutation';
+import { useTranslation } from 'react-i18next';
 
 export default function SignIn() {
   const { mutate: signin, status } = useSignInMutation();
+  const { t } = useTranslation();
   const form = useForm({
     mode: 'onChange',
     defaultValues: {
@@ -33,23 +35,22 @@ export default function SignIn() {
                 <Logo className="text-4xl" />
                 <div className="flex gap-2 items-center justify-center">
                   <p className="text-sm mt-5 text-center">
-                    You can sign up with your email, username and password or
-                    with google
+                    {t('messages.sign_in_up')}
                   </p>
                   <img src={phoneImg} alt="phone-icon" width={60} height={60} />
                 </div>
               </div>
               <FormInput
                 name="email"
-                label="Email"
-                placeholder="example@company.com"
+                label={t('forms.email')}
+                placeholder={t('placeholders.email')}
                 type="email"
                 required
               />
               <FormInput
                 name="password"
-                label="Password"
-                placeholder="password"
+                label={t('forms.password')}
+                placeholder={t('placeholders.password')}
                 type="password"
                 required
               />
@@ -60,17 +61,17 @@ export default function SignIn() {
                 {status === 'pending' ? (
                   <>
                     <Spinner size="sm" />
-                    <span className="ml-4">Loading...</span>
+                    <span className="ml-4">{t('buttons.loading')}</span>
                   </>
                 ) : (
-                  'Sign in'
+                  t('buttons.sign_in')
                 )}
               </Button>
               <OAuth />
               <div className="flex gap-2 items-center justify-center">
-                <span>Dont Have an account?</span>
+                <span>{t('messages.no_account')}</span>
                 <Link to="/sign-up" className="text-blue-500">
-                  Sign up
+                  {t('navigation.sign_up')}
                 </Link>
               </div>
             </form>

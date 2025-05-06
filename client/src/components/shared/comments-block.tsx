@@ -2,6 +2,8 @@ import { FaUserCircle } from 'react-icons/fa';
 import { FC, Fragment } from 'react';
 import { Avatar } from 'flowbite-react';
 import moment from 'moment';
+import { Title } from './title';
+import { useTranslation } from 'react-i18next';
 
 interface CommentsBlockProps {
   items: any[];
@@ -14,9 +16,10 @@ export const CommentsBlock: FC<CommentsBlockProps> = ({
   children,
   isLoading = true,
 }) => {
+  const { t } = useTranslation();
   return (
     <div className="p-4 dark:bg-slate-800 rounded shadow-md">
-      <h3 className="text-lg font-semibold mb-3">Comments</h3>
+      <Title text={t('titles.comments')} size="sm" className="mb-4" />
       <ul className="divide-y divide-gray-200">
         {(isLoading ? Array.from({ length: 5 }) : items).map((obj, index) => (
           <Fragment key={index}>

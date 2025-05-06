@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import { Button, Modal, ModalBody, ModalHeader } from 'flowbite-react';
 import { HiOutlineExclamationCircle } from 'react-icons/hi';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   openModal: boolean;
@@ -16,6 +17,7 @@ export const ModalPopup: FC<Props> = ({
   text,
   onDelete,
 }) => {
+  const { t } = useTranslation();
   return (
     <>
       <Modal
@@ -33,10 +35,10 @@ export const ModalPopup: FC<Props> = ({
             </h3>
             <div className="flex justify-center gap-4">
               <Button color="failure" onClick={() => onDelete && onDelete()}>
-                {"Yes, I'm sure"}
+                {t('common.yes')}
               </Button>
               <Button color="gray" onClick={() => setOpenModal(false)}>
-                No, cancel
+                {t('common.no')}
               </Button>
             </div>
           </div>

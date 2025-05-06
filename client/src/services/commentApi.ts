@@ -49,12 +49,14 @@ export const likeComment = async (
 ): Promise<PostCommentResponse[]> => {
   return sendRequest(buildUrl(['comments', 'like-comment', commentId]), {
     method: 'Put',
+    withCredentials: true,
   });
 };
 
 export const deleteComment = async (commentId: string) => {
   return sendRequest(buildUrl(['comments', 'delete-comment', commentId]), {
     method: 'DELETE',
+    withCredentials: true,
   });
 };
 
@@ -65,5 +67,6 @@ export const editComment = async (
   return sendRequest(buildUrl(['comments', 'edit-comment', commentId]), {
     method: 'PUT',
     data,
+    withCredentials: true,
   });
 };

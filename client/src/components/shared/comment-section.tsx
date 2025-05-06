@@ -10,6 +10,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Comment } from './comment';
 import { getPostComments } from '../../services/commentApi';
 import { ModalPopup } from './popup-modal';
+import { useTranslation } from 'react-i18next';
 
 interface CommentSectionProps {
   postId: string;
@@ -22,7 +23,8 @@ export const CommentSection: FC<CommentSectionProps> = ({ postId }) => {
   const { mutate } = useCreateCommentMutation();
 
   const { mutate: deleteComment } = useDeleteCommentMutation();
-
+  const { t } = useTranslation();
+  const MAX_LENGTH = 200;
   const handleDelete = () => {
     if (commentId) {
       deleteComment(commentId);
@@ -50,7 +52,7 @@ export const CommentSection: FC<CommentSectionProps> = ({ postId }) => {
     <div className="max-w-2xl mx-auto w-full p-3">
       {user ? (
         <div className="flex items-center gap-2 mb-4 text-gray-500 text-sm">
-          <p>Signed in as: </p>
+          <p>{t('messages.signed_as')}</p>
           <img
             src={user.avatarUrl}
             alt={user.userName}
@@ -70,7 +72,7 @@ export const CommentSection: FC<CommentSectionProps> = ({ postId }) => {
             to="/sign-in"
             className="text-blue-500 hover:underline hover:text-blue-700"
           >
-            Sign in
+            {t('navigation.sign_in')}
           </Link>
         </div>
       )}
@@ -83,13 +85,15 @@ export const CommentSection: FC<CommentSectionProps> = ({ postId }) => {
             value={comment}
             onChange={(e) => setComment(e.target.value)}
             className=""
-            placeholder="Write a comment..."
+            placeholder={t('placeholders.write_comment')}
             rows={4}
-            maxLength={200}
+            maxLength={MAX_LENGTH}
           />
           <div className="flex justify-between items-center mt-3">
             <p className="text-gray-500 text-xs">
-              {200 - comment.length} characters remaining
+              {t('messages.chars_remaining', {
+                count: MAX_LENGTH - comment.length,
+              })}
             </p>
             <Button
               outline
@@ -97,7 +101,7 @@ export const CommentSection: FC<CommentSectionProps> = ({ postId }) => {
               className=" bg-gradient-to-r from-blue-500 to-pink-500  
                           transition-all duration-300  hover:from-pink-500 hover:to-blue-500 text-white px-4 py-2 rounded-md mt-2 hover:bg-blue-600"
             >
-              Submit
+              {t('buttons.submit')}
             </Button>
           </div>
         </form>
@@ -113,9 +117,7 @@ export const CommentSection: FC<CommentSectionProps> = ({ postId }) => {
         </>
       ) : (
         <div className="flex items-center justify-center mt-4">
-          <p className="text-gray-500 text-sm">
-            No comments yet. Be the first to comment!
-          </p>
+          <p className="text-gray-500 text-sm">{t('messages.no_comments')}</p>
         </div>
       )}
       <div>
@@ -134,7 +136,7 @@ export const CommentSection: FC<CommentSectionProps> = ({ postId }) => {
       <ModalPopup
         openModal={deleteModal}
         setOpenModal={setDeleteModal}
-        text="Are you sure you want to delete this comment?"
+        text={t('messages.delete_comment')}
         onDelete={handleDelete}
       />
     </div>

@@ -1,21 +1,22 @@
-import { Button, TabItem, Tabs } from 'flowbite-react';
+import { Pagination, TabItem, Tabs } from 'flowbite-react';
 import { FaRegNewspaper } from 'react-icons/fa';
 import { TbChartBarPopular } from 'react-icons/tb';
 import { TagsBlock } from '../components/shared/tags-block';
 import { useQuery } from '@tanstack/react-query';
 import { Post } from '../components/shared/post';
 import { getAllPosts } from '../services/postApi';
-import { formateDate } from '../lib/formate-data';
+import { formatDate } from '../lib/format-data';
 import { CommentsBlock } from '../components/shared/comments-block';
 import { PostSkeleton } from '../components/shared/post-skeleton';
 import { useAuthStore } from '../store/auth-store';
 import { useState } from 'react';
 import { getComments } from '../services/commentApi';
+import { useTranslation } from 'react-i18next';
 
 const Posts = () => {
   const limit = 5;
   const [page, setPage] = useState(1);
-
+  const { t, i18n } = useTranslation();
   const [tab, setTab] = useState('new');
   const { user } = useAuthStore();
   const sortBy = tab === 'new' ? 'createdAt' : 'views';
@@ -42,10 +43,14 @@ const Posts = () => {
         aria-label="Tabs with underline"
         variant="underline"
       >
-        <TabItem active={tab === 'new'} title="New" icon={FaRegNewspaper} />
+        <TabItem
+          active={tab === 'new'}
+          title={t('titles.new_posts')}
+          icon={FaRegNewspaper}
+        />
         <TabItem
           active={tab === 'popular'}
-          title="Popular"
+          title={t('titles.popular_posts')}
           icon={TbChartBarPopular}
         />
       </Tabs>
@@ -60,7 +65,7 @@ const Posts = () => {
                   title={post.title}
                   imageUrl={post.imageUrl}
                   user={post.user}
-                  createdAt={formateDate(post.createdAt)}
+                  createdAt={formatDate(post.createdAt, i18n.language)}
                   viewsCount={post.viewsCount}
                   commentsCount={post.commentCount}
                   slug={post.slug}
@@ -71,9 +76,9 @@ const Posts = () => {
               ))}
           {!data ||
             (data?.totalPosts > limit && (
-              <div className="flex justify-center gap-4 mb-4 border-gray-400 border-t pt-2">
-                <Button
-                  className="text-white font-semibold py-2 px-4 rounded bg-gradient-to-r from-blue-500 to-pink-500 
+              <div className="flex justify-center items-center gap-4 mb-4 border-gray-400 border-t pt-2">
+                {/* <Button
+                  className="text-white font-semibold py-2 px-4 rounded bg-gradient-to-r from-blue-500 to-pink-500
                 transition-all duration-300  hover:from-pink-500 hover:to-blue-500"
                   outline
                   onClick={() => setPage((prev) => Math.max(prev - 1))}
@@ -82,7 +87,7 @@ const Posts = () => {
                   Previous
                 </Button>
                 <Button
-                  className="text-white font-semibold py-2 px-4 rounded bg-gradient-to-r from-blue-500 to-pink-500 
+                  className="text-white font-semibold py-2 px-4 rounded bg-gradient-to-r from-blue-500 to-pink-500
                 transition-all duration-300  hover:from-pink-500 hover:to-blue-500"
                   outline
                   onClick={() => setPage((prev) => prev + 1)}
@@ -90,7 +95,21 @@ const Posts = () => {
                 >
                   Next
                 </Button>
-                <p>Page {page}</p>
+                <p>Page {page}</p> */}
+
+                <Pagination
+                  layout="navigation"
+                  currentPage={page}
+                  totalPages={Math.ceil(data.totalPosts / limit)}
+                  onPageChange={setPage}
+                  showIcons
+                />
+                <span className="text-sm text-gray-500">
+                  {t('pagination.page_info', {
+                    current: page,
+                    total: Math.ceil(data.totalPosts / limit),
+                  })}
+                </span>
               </div>
             ))}
         </div>

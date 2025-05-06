@@ -13,11 +13,13 @@ import { FaArrowRightFromBracket, FaRegComments } from 'react-icons/fa6';
 import { Link, useSearchParams } from 'react-router-dom';
 import { useLogoutMutation } from '../../mutations/auth-mutation';
 import { useAuthStore } from '../../store/auth-store';
+import { useTranslation } from 'react-i18next';
 
 export const DashboardSidebar = () => {
   const { mutate: logout } = useLogoutMutation();
   const [searchParams] = useSearchParams();
   const { user } = useAuthStore();
+  const { t } = useTranslation();
   const tab = searchParams.get('tab') || '';
   return (
     <Sidebar className="w-full md:w-56">
@@ -29,7 +31,7 @@ export const DashboardSidebar = () => {
               icon={HiChartPie}
               labelColor="dark"
             >
-              Dashboard
+              {t('dashboard_sidebar.dashboard')}
             </SidebarItem>
           </Link>
           <Link to={`/dashboard?tab=profile`}>
@@ -39,7 +41,7 @@ export const DashboardSidebar = () => {
               label={user?.isAdmin ? 'Admin' : 'User'}
               labelColor="dark"
             >
-              Profile
+              {t('dashboard_sidebar.profile')}
             </SidebarItem>
           </Link>
           <Link to={`/dashboard?tab=create-post`}>
@@ -48,7 +50,7 @@ export const DashboardSidebar = () => {
               icon={MdOutlineCreate}
               labelColor="dark"
             >
-              Create Post
+              {t('dashboard_sidebar.create_post')}
             </SidebarItem>
           </Link>
           <Link to={`/dashboard?tab=my-posts`}>
@@ -57,7 +59,7 @@ export const DashboardSidebar = () => {
               icon={FaClipboardList}
               labelColor="dark"
             >
-              My Posts
+              {t('dashboard_sidebar.my_posts')}
             </SidebarItem>
           </Link>
 
@@ -69,7 +71,7 @@ export const DashboardSidebar = () => {
                   icon={FaUsers}
                   labelColor="dark"
                 >
-                  Users
+                  {t('dashboard_sidebar.users')}
                 </SidebarItem>
               </Link>
               <Link to={`/dashboard?tab=posts`}>
@@ -78,7 +80,7 @@ export const DashboardSidebar = () => {
                   icon={HiClipboardDocumentList}
                   labelColor="dark"
                 >
-                  Posts
+                  {t('dashboard_sidebar.posts')}
                 </SidebarItem>
               </Link>
               <Link to={`/dashboard?tab=comments`}>
@@ -87,7 +89,7 @@ export const DashboardSidebar = () => {
                   icon={FaRegComments}
                   labelColor="dark"
                 >
-                  Commets
+                  {t('dashboard_sidebar.comments')}
                 </SidebarItem>
               </Link>
             </>
@@ -98,7 +100,7 @@ export const DashboardSidebar = () => {
             icon={FaArrowRightFromBracket}
             className="cursor-pointer"
           >
-            Sign Out
+            {t('dashboard_sidebar.sign_out')}
           </SidebarItem>
         </SidebarItemGroup>
       </SidebarItems>

@@ -10,6 +10,7 @@ import { ModalPopup } from './popup-modal';
 import { useLogoutMutation } from '../../mutations/auth-mutation';
 import { useUpdateUserMutation } from '../../mutations/user-mutations';
 import { useCloudinaryUpload } from '../../hooks/cloudinary-upload';
+import { useTranslation } from 'react-i18next';
 
 export const DashbordProfile = () => {
   const { mutate: logout } = useLogoutMutation();
@@ -18,6 +19,7 @@ export const DashbordProfile = () => {
   const [imageUrl, setImageUrl] = useState<string | null>(null);
 
   const { user } = useAuthStore();
+  const { t } = useTranslation();
 
   const { uploadImage, cloudinaryUrl, uploading } = useCloudinaryUpload();
 
@@ -68,7 +70,7 @@ export const DashbordProfile = () => {
 
   return (
     <div className="max-w-lg mx-auto p-4 w-full text-center">
-      <Title text="Profile" size="xl" />
+      <Title text={t('titles.profile')} size="xl" />
       <FormProvider {...form}>
         <form
           className="flex flex-col gap-5 w-[350px] md:w-[450px] justify-center mt-5"
@@ -94,16 +96,21 @@ export const DashbordProfile = () => {
             type="file"
             className="hidden"
           />
-          <FormInput name="userName" placeholder="name" type="text" required />
+          <FormInput
+            name="userName"
+            placeholder={t('placeholders.username')}
+            type="text"
+            required
+          />
           <FormInput
             name="email"
-            placeholder="example@company.com"
+            placeholder={t('placeholders.email')}
             type="email"
             required
           />
           <FormInput
             name="password"
-            placeholder="password"
+            placeholder={t('placeholders.new_password')}
             type="password"
             required
           />
@@ -115,10 +122,10 @@ export const DashbordProfile = () => {
             {status === 'pending' ? (
               <>
                 <Spinner size="sm" />
-                <span className="ml-4">Loading...</span>
+                <span className="ml-4">t('buttons.loading')</span>
               </>
             ) : (
-              'Update'
+              t('buttons.update')
             )}
           </Button>
           <div className="flex justify-between mt-3">
@@ -126,13 +133,13 @@ export const DashbordProfile = () => {
               onClick={() => setOpenModal(true)}
               className="text-red-500 cursor-pointer"
             >
-              Delete Account
+              {t('buttons.delete_account')}
             </span>
             <span
               onClick={() => logout()}
               className="text-red-500 cursor-pointer"
             >
-              Sign Out
+              {t('buttons.sign_out')}
             </span>
           </div>
         </form>
@@ -140,7 +147,7 @@ export const DashbordProfile = () => {
       <ModalPopup
         openModal={openModal}
         setOpenModal={setOpenModal}
-        text="Are you sure you want to delete your account?"
+        text={t('messages.delete_account')}
         onDelete={() => userDelete(user._id as string)}
       />
     </div>

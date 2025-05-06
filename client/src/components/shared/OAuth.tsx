@@ -5,8 +5,11 @@ import { app } from '../../firebase';
 import { useMutation } from '@tanstack/react-query';
 import { signWithGoogle } from '../../services/authApi';
 import { useAuthStore } from '../../store/auth-store';
+import { useTranslation } from 'react-i18next';
 
 export const OAuth = () => {
+  const { t } = useTranslation();
+
   const { mutate, status } = useMutation({
     mutationFn: signWithGoogle,
     onSuccess: async (data) => {
@@ -46,10 +49,10 @@ export const OAuth = () => {
       {status === 'pending' ? (
         <>
           <Spinner size="sm" />
-          <span className="ml-4">Loading...</span>
+          <span className="ml-4">{t('buttons.loading')}</span>
         </>
       ) : (
-        'Sign in with Google'
+        t('buttons.sign_in_with_google')
       )}
     </Button>
   );
