@@ -3,8 +3,7 @@ import bcrypt from "bcryptjs";
 import { createToken } from "../utils/jwt.js";
 import { httpError } from "../utils/http-error.js";
 
-
-
+ 
 export const signup = async (req, res) => {
   
     const passwordHash = await bcrypt.hash(req.body.password, 10);

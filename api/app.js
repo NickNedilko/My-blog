@@ -26,6 +26,10 @@ app.use("/api/comments", commentRouter);
 
 
 app.use((err, req, res, next) => {
+
+  if (err.code === 11000 && err.keyPattern?.email) {
+    return res.status(400).json({ message: 'validation.emailExists' });
+  }
     const { status = 500, message = 'Server error' } = err;
     res.status(status).json({ message, })
 });
