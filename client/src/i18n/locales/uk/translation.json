@@ -96,5 +96,16 @@
   },
   "pagination": {
     "page_info": "Сторінка {{current}} з {{total}}"
-  }
+  },
+  "validation": {
+     "requiredEmail": "Email обов'язковий",
+     "invalidEmail": "Невірний формат email",
+     "shortPassword": "Пароль має мінімум 8 символів",
+     "weakPassword": "Пароль повинен містити букви та цифри",
+     "usernameTooShort": "Ім’я має містити щонайменше 2 символи",
+     "usernameTooLong": "Ім’я не може перевищувати 30 символів",
+     "usernameInvalid": "Ім’я може містити лише літери, цифри та підкреслення",
+     "emailExists": "Email вже використовується",
+    "default": "Невірне значення"
+        }
 }

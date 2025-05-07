@@ -7,14 +7,17 @@ import { Logo } from '../components/shared/logo';
 import { OAuth } from '../components/shared/OAuth';
 import { useSignUpMutation } from '../mutations/auth-mutation';
 import { useTranslation } from 'react-i18next';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { registerSchema } from '../schemas/registerSchema';
+import { useEffect } from 'react';
 
 export default function SignUp() {
-  const { mutate: signup, status } = useSignUpMutation();
+  const { mutate: signup, status, error } = useSignUpMutation();
   const { t } = useTranslation();
 
   const form = useForm({
     mode: 'onChange',
-    // resolver: zodResolver(registerSchema),
+    resolver: zodResolver(registerSchema),
     defaultValues: {
       userName: '',
       email: '',
@@ -25,6 +28,16 @@ export default function SignUp() {
   const onSubmit = () => {
     signup(form.getValues());
   };
+
+  useEffect(() => {
+  //@ts-ignore
+  const serverMessage = error?.response?.data?.message;
+  if (serverMessage === 'validation.emailExists') {
+    form.setError('email', {
+      message: t('validation.emailExists'),
+    });
+  }
+}, [error]);
 
   return (
     <div className="min-h-screen mt-20 ">

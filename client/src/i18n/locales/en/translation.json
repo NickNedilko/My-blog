@@ -97,5 +97,16 @@
   },
   "pagination": {
     "page_info": "Page {{current}} of {{total}}"
-  }
+  },
+  "validation": {
+    "requiredEmail": "Email is required",
+    "invalidEmail": "Invalid email format",
+    "shortPassword": "Password must be at least 8 characters",
+    "weakPassword": "Password must contain letters and numbers",
+    "usernameTooShort": "Username must contain at least 2 characters",
+    "usernameTooLong": "Username cannot exceed 30 characters",
+    "usernameInvalid": "Username can contain only letters, numbers and underscores",
+    "emailExists": "Email is already in use",
+    "default": "Invalid value"
+        }
 }

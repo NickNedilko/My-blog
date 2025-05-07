@@ -1,5 +1,11 @@
+import { LoginFormData } from '../schemas/loginSchema';
+import { RegisterFormData } from '../schemas/registerSchema';
+import { User } from '../types';
+import { buildUrl, sendRequest } from './instance';
+
+
 export const signin = async (
-  data: Pick<User, 'email' | 'password'>
+  data: LoginFormData
 ): Promise<User> => {
   return sendRequest<User>(buildUrl(['auth', 'signin']), {
     method: 'POST',
@@ -11,11 +17,8 @@ export const signin = async (
   });
 };
 
-import { User } from '../types';
-import { buildUrl, sendRequest } from './instance';
-
 export const signup = async (
-  data: Pick<User, 'email' | 'password' | 'userName'>
+  data: RegisterFormData
 ): Promise<User> => {
   return sendRequest<User>(buildUrl(['auth', 'signup']), {
     method: 'POST',
