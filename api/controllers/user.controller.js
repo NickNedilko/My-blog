@@ -65,7 +65,8 @@ export const updateUser = async (req, res) => {
         _id: updatedUser._id,
         email: updatedUser.email,
         userName: updatedUser.userName,
-        avatarUrl: updatedUser.avatarUrl
+        avatarUrl: updatedUser.avatarUrl,
+        isAdmin: updatedUser.isAdmin
     });
 };
 

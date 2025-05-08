@@ -12,7 +12,7 @@ export const app = express();
 
 const allowedOrigins = [
   'http://localhost:5173',
-  'https://my-blog-blond-eight.vercel.app/',
+  'https://my-blog-blond-eight.vercel.app',
 ];
 
 app.use(cors({
