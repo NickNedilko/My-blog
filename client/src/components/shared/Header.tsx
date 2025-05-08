@@ -73,7 +73,7 @@ export default function Header() {
           className="hidden lg:inline"
         />
       </form>
-      <Button className="lg:hidden" color="light" pill>
+      <Button className="hidden md:flex lg:hidden" color="light" pill>
         <AiOutlineSearch size={16} />
       </Button>
       <div className="flex items-center gap-4 md:order-2">

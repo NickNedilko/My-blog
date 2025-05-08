@@ -3,10 +3,7 @@ import { RegisterFormData } from '../schemas/registerSchema';
 import { User } from '../types';
 import { buildUrl, sendRequest } from './instance';
 
-
-export const signin = async (
-  data: LoginFormData
-): Promise<User> => {
+export const signin = async (data: LoginFormData): Promise<User> => {
   return sendRequest<User>(buildUrl(['auth', 'signin']), {
     method: 'POST',
     data,
@@ -17,9 +14,7 @@ export const signin = async (
   });
 };
 
-export const signup = async (
-  data: RegisterFormData
-): Promise<User> => {
+export const signup = async (data: RegisterFormData): Promise<User> => {
   return sendRequest<User>(buildUrl(['auth', 'signup']), {
     method: 'POST',
     data,

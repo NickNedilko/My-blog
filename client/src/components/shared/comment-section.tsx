@@ -67,7 +67,7 @@ export const CommentSection: FC<CommentSectionProps> = ({ postId }) => {
         </div>
       ) : (
         <div className="flex gap-2 text-sm text-teal-500 my-5">
-          <p>Sign in to left comment.</p>
+          <p>{t('messages.sign_to_commet')}</p>
           <Link
             to="/sign-in"
             className="text-blue-500 hover:underline hover:text-blue-700"

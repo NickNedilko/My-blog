@@ -1,7 +1,7 @@
 import { FormProvider, useForm } from 'react-hook-form';
 import phoneImg from '../assets/phone-icon.png';
 import { FormInput } from '../components/shared/form-input';
-import { Button, Spinner } from 'flowbite-react';
+import { Alert, Button, Spinner } from 'flowbite-react';
 import { Link } from 'react-router-dom';
 import { Logo } from '../components/shared/logo';
 import { OAuth } from '../components/shared/OAuth';
@@ -9,13 +9,15 @@ import { useSignInMutation } from '../mutations/auth-mutation';
 import { useTranslation } from 'react-i18next';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { loginSchema } from '../schemas/loginSchema';
+import { HiInformationCircle } from 'react-icons/hi2';
+import axios from 'axios';
 
 export default function SignIn() {
-  const { mutate: signin, status } = useSignInMutation();
+  const { mutate: signin, status, error } = useSignInMutation();
   const { t } = useTranslation();
   const form = useForm({
     mode: 'onChange',
-    resolver: zodResolver(loginSchema), 
+    resolver: zodResolver(loginSchema),
     defaultValues: {
       email: '',
       password: '',
@@ -79,6 +81,11 @@ export default function SignIn() {
               </div>
             </form>
           </FormProvider>
+          {axios.isAxiosError(error) && error?.response?.data.message && (
+            <Alert color="failure" icon={HiInformationCircle}>
+              {error?.response.data.message}
+            </Alert>
+          )}
         </div>
       </div>
     </div>

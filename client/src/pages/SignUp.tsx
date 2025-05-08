@@ -1,7 +1,7 @@
 import { FormProvider, useForm } from 'react-hook-form';
 import phoneImg from '../assets/phone-icon.png';
 import { FormInput } from '../components/shared/form-input';
-import { Button, Spinner } from 'flowbite-react';
+import { Alert, Button, Spinner } from 'flowbite-react';
 import { Link } from 'react-router-dom';
 import { Logo } from '../components/shared/logo';
 import { OAuth } from '../components/shared/OAuth';
@@ -10,6 +10,8 @@ import { useTranslation } from 'react-i18next';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { registerSchema } from '../schemas/registerSchema';
 import { useEffect } from 'react';
+import axios from 'axios';
+import { HiInformationCircle } from 'react-icons/hi2';
 
 export default function SignUp() {
   const { mutate: signup, status, error } = useSignUpMutation();
@@ -30,14 +32,14 @@ export default function SignUp() {
   };
 
   useEffect(() => {
-  //@ts-ignore
-  const serverMessage = error?.response?.data?.message;
-  if (serverMessage === 'validation.emailExists') {
-    form.setError('email', {
-      message: t('validation.emailExists'),
-    });
-  }
-}, [error]);
+    const serverMessage =
+      axios.isAxiosError(error) && error?.response?.data?.message;
+    if (serverMessage === 'validation.emailExists') {
+      form.setError('email', {
+        message: t('validation.emailExists'),
+      });
+    }
+  }, [error]);
 
   return (
     <div className="min-h-screen mt-20 ">
@@ -100,6 +102,11 @@ export default function SignUp() {
               </div>
             </form>
           </FormProvider>
+          {axios.isAxiosError(error) && error?.response?.data.message && (
+            <Alert color="failure" icon={HiInformationCircle}>
+              {error?.response.data.message}
+            </Alert>
+          )}
         </div>
       </div>
     </div>

@@ -86,7 +86,8 @@
     "signed_as": "Signed in as:",
     "chars_remaining": "{{count}} characters remaining",
     "no_comments": "No comments yet. Be the first to comment!",
-    "copyrights": "All rights reserved. Developed by Mykola Nedilko"
+    "copyrights": "All rights reserved. Developed by Mykola Nedilko",
+    "sign_to_commet": "Sign in to left comment."
   },
   "categories": {
     "uncategorized": "Uncategorized",
@@ -108,5 +109,5 @@
     "usernameInvalid": "Username can contain only letters, numbers and underscores",
     "emailExists": "Email is already in use",
     "default": "Invalid value"
-        }
+  }
 }

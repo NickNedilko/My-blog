@@ -2,8 +2,6 @@ import { useMutation } from '@tanstack/react-query';
 import { logout, signin, signup } from '../services/authApi';
 import { useAuthStore } from '../store/auth-store';
 
-
-
 export const useLogoutMutation = () => {
   return useMutation({
     mutationFn: logout,
@@ -21,7 +19,6 @@ export const useSignInMutation = () => {
       useAuthStore.getState().setLoggedIn();
       useAuthStore.getState().setUser(user);
     },
-
   });
 };
 
@@ -33,8 +30,8 @@ export const useSignUpMutation = () => {
       useAuthStore.getState().setLoggedIn();
       useAuthStore.getState().setUser(user);
     },
-        onError: (error) => {
+    onError: (error) => {
       console.error('Signup error:', error);
-  },
+    },
   });
 };

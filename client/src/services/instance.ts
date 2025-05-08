@@ -1,14 +1,11 @@
 import axios, { AxiosRequestConfig } from 'axios';
 
-// export const buildUrl = (...paths: string[]) =>
-//     `http://localhost:3000/api/${paths.join('/')}`;
-
 type QueryValue = string | number | boolean;
 export const buildUrl = (
   paths: (string | number)[],
   queryParams?: Record<string, QueryValue>
 ): string => {
-  const baseUrl = `http://localhost:3000/api/${paths.join('/')}`;
+  const baseUrl = `https://my-blog-dn9y.onrender.com/api/${paths.join('/')}`;
 
   const query = queryParams
     ? new URLSearchParams(

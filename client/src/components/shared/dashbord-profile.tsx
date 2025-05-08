@@ -122,7 +122,7 @@ export const DashbordProfile = () => {
             {status === 'pending' ? (
               <>
                 <Spinner size="sm" />
-                <span className="ml-4">t('buttons.loading')</span>
+                <span className="ml-4">{t('buttons.loading')}</span>
               </>
             ) : (
               t('buttons.update')
