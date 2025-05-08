@@ -24,7 +24,8 @@ export const signup = async (req, res) => {
 
     res.cookie('authtoken', token, {
         httpOnly: true,
-        secure: false,
+        secure: true,
+        sameSite: 'None',
     }).json({
         ...userData,
     });
@@ -52,7 +53,8 @@ export const signin = async (req, res) => {
 
     res.cookie('authtoken', token, {
         httpOnly: true,
-        secure: false,
+        secure: true,
+        sameSite: 'None',
     }).json({
         ...userData,
     });
@@ -66,7 +68,8 @@ export const logout = async (req, res) => {
     }
     res.clearCookie('authtoken', {
         httpOnly: true,
-        secure: false,
+        secure: true,
+        sameSite: 'None',
     });
     res.json({
         message: 'Logout succes'
@@ -89,8 +92,9 @@ export const googleAuth = async (req, res) => {
         });
         const { password, ...userData } = user._doc;
         res.cookie('authtoken', token, {
-            httpOnly: true,
-            secure: false,
+           httpOnly: true,
+        secure: true,
+        sameSite: 'None',
         }).json({
             ...userData
         });
@@ -102,7 +106,8 @@ export const googleAuth = async (req, res) => {
         const { password, ...userData } = user._doc;
         res.cookie('authtoken', token, {
             httpOnly: true,
-            secure: false,
+            secure: true,
+            sameSite: 'None',
         }).json({
             ...userData,
         });
