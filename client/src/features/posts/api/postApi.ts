@@ -13,9 +13,6 @@ export const createPost = async (data: Partial<Post>): Promise<Post> => {
     method: 'POST',
     data,
     withCredentials: true,
-    headers: {
-      'Content-Type': 'application/json',
-    },
   });
 };
 
