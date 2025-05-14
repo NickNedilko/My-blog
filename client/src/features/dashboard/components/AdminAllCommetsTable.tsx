@@ -9,10 +9,10 @@ import {
   TableRow,
 } from 'flowbite-react';
 import { useState } from 'react';
-import { Button } from 'flowbite-react';
 import { useAuthStore } from '../../auth/model/auth-store';
 import { getComments } from '../../comments/api/commentApi';
 import { useDeleteCommentMutation } from '../../comments/api/mutations/comment-mutation';
+import Pagination from '../../../shared/components/Pagination';
 
 export const AdminAllCommentsTable = () => {
   const limit = 10;
@@ -25,7 +25,7 @@ export const AdminAllCommentsTable = () => {
   });
 
   const { mutate: deleteComment } = useDeleteCommentMutation();
-
+  console.log(data);
   return (
     <div className="table-auto overflow-x-scroll md:mx-auto p-8 scrollbar xl:[&::-webkit-scrollbar]:hidden scrollbar-track-slate-100 scrollbar-thumb-slate-300 dark:scrollbar-track-gray-700 dark:scrollbar-thumb-gray-500">
       {currentUser?.isAdmin ? (
@@ -72,30 +72,12 @@ export const AdminAllCommentsTable = () => {
               ))}
             </TableBody>
           </Table>
-          {!data ||
-            (data?.commentsCount > limit && (
-              <div className="flex justify-center gap-4 mt-4 border-gray-400 border-t pt-2">
-                <Button
-                  className="text-white font-semibold py-2 px-4 rounded bg-gradient-to-r from-blue-500 to-pink-500 
-                transition-all duration-300  hover:from-pink-500 hover:to-blue-500"
-                  outline
-                  onClick={() => setPage((prev) => Math.max(prev - 1))}
-                  disabled={page === 1}
-                >
-                  Previous
-                </Button>
-                <Button
-                  className="text-white font-semibold py-2 px-4 rounded bg-gradient-to-r from-blue-500 to-pink-500 
-                transition-all duration-300  hover:from-pink-500 hover:to-blue-500"
-                  outline
-                  onClick={() => setPage((prev) => prev + 1)}
-                  disabled={!data || page * limit >= data?.commentsCount}
-                >
-                  Next
-                </Button>
-                <p>Page {page}</p>
-              </div>
-            ))}
+          <Pagination
+            page={page}
+            setPage={setPage}
+            totalItems={data?.commentsCount || 0}
+            limit={limit}
+          />
         </>
       ) : (
         <p>You have no posts yet</p>

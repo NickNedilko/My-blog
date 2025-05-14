@@ -10,16 +10,15 @@ import {
 import { FaCheck } from 'react-icons/fa';
 import { IoClose } from 'react-icons/io5';
 import { useState } from 'react';
-import { Button } from 'flowbite-react';
 import { useDeleteUserMutation } from '../../user/api/mutations/user-mutations';
 import { getUsers } from '../../user/api/userApi';
 import { useAuthStore } from '../../auth/model/auth-store';
+import Pagination from '../../../shared/components/Pagination';
 
 export const AdminAllUsersTable = () => {
   const limit = 5;
   const [page, setPage] = useState(1);
   const { user: currentUser } = useAuthStore();
-
   const { mutate } = useDeleteUserMutation();
 
   const { data } = useQuery({
@@ -82,30 +81,12 @@ export const AdminAllUsersTable = () => {
               ))}
             </TableBody>
           </Table>
-          {!data ||
-            (data?.totalUsers > limit && (
-              <div className="flex justify-center gap-4 mt-4 border-gray-400 border-t pt-2">
-                <Button
-                  className="text-white font-semibold py-2 px-4 rounded bg-gradient-to-r from-blue-500 to-pink-500 
-                transition-all duration-300  hover:from-pink-500 hover:to-blue-500"
-                  outline
-                  onClick={() => setPage((prev) => Math.max(prev - 1))}
-                  disabled={page === 1}
-                >
-                  Previous
-                </Button>
-                <Button
-                  className="text-white font-semibold py-2 px-4 rounded bg-gradient-to-r from-blue-500 to-pink-500 
-                transition-all duration-300  hover:from-pink-500 hover:to-blue-500"
-                  outline
-                  onClick={() => setPage((prev) => prev + 1)}
-                  disabled={!data || page * limit >= data?.totalUsers}
-                >
-                  Next
-                </Button>
-                <p>Page {page}</p>
-              </div>
-            ))}
+          <Pagination
+            page={page}
+            setPage={setPage}
+            totalItems={data?.totalUsers || 0}
+            limit={limit}
+          />
         </>
       ) : (
         <p>You have no posts yet</p>

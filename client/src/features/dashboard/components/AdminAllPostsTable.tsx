@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import {
+  Pagination,
   Table,
   TableBody,
   TableCell,
@@ -9,16 +10,16 @@ import {
 } from 'flowbite-react';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
-import { Button } from 'flowbite-react';
 import { useAuthStore } from '../../auth/model/auth-store';
 import { useDeletePostMutation } from '../../posts/api/mutations/post-mutation';
 import { getAllPosts } from '../../posts/api/postApi';
+import { useTranslation } from 'react-i18next';
 
 export const AdminAllPostsTable = () => {
   const limit = 5;
   const [page, setPage] = useState(1);
   const { user } = useAuthStore();
-
+  const { t } = useTranslation();
   const { mutate: deletePost } = useDeletePostMutation();
 
   const { data } = useQuery({
@@ -99,26 +100,20 @@ export const AdminAllPostsTable = () => {
           </Table>
           {!data ||
             (data?.totalPosts > limit && (
-              <div className="flex justify-center gap-4 mt-4 border-gray-400 border-t pt-2">
-                <Button
-                  className="text-white font-semibold py-2 px-4 rounded bg-gradient-to-r from-blue-500 to-pink-500 
-                transition-all duration-300  hover:from-pink-500 hover:to-blue-500"
-                  outline
-                  onClick={() => setPage((prev) => Math.max(prev - 1))}
-                  disabled={page === 1}
-                >
-                  Previous
-                </Button>
-                <Button
-                  className="text-white font-semibold py-2 px-4 rounded bg-gradient-to-r from-blue-500 to-pink-500 
-                transition-all duration-300  hover:from-pink-500 hover:to-blue-500"
-                  outline
-                  onClick={() => setPage((prev) => prev + 1)}
-                  disabled={!data || page * limit >= data?.totalPosts}
-                >
-                  Next
-                </Button>
-                <p>Page {page}</p>
+              <div className="flex justify-center items-center gap-4 mt-4 border-gray-400 border-t pt-2">
+                <Pagination
+                  layout="navigation"
+                  currentPage={page}
+                  totalPages={Math.ceil(data.totalPosts / limit)}
+                  onPageChange={setPage}
+                  showIcons
+                />
+                <span className="text-sm text-gray-500">
+                  {t('pagination.page_info', {
+                    current: page,
+                    total: Math.ceil(data.totalPosts / limit),
+                  })}
+                </span>
               </div>
             ))}
         </>
