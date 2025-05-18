@@ -1,4 +1,4 @@
-import { buildUrl, sendRequest } from '../../../shared/config/instance';
+import { buildUrl, api } from '../../../shared/config/instance';
 import { Post } from '../../../shared/types';
 
 interface AllPostsResponse {
@@ -9,11 +9,8 @@ interface AllPostsResponse {
 }
 
 export const createPost = async (data: Partial<Post>): Promise<Post> => {
-  return sendRequest(buildUrl(['posts', 'add-post']), {
-    method: 'POST',
-    data,
-    withCredentials: true,
-  });
+  const response = await api.post<Post>(buildUrl(['posts', 'add-post']), data);
+  return response.data;
 };
 
 export const getAllPosts = async (
@@ -24,53 +21,45 @@ export const getAllPosts = async (
   sort?: string,
   sortBy?: string
 ): Promise<AllPostsResponse> => {
-  return sendRequest(
-    buildUrl(['posts', 'get-posts'], {
-      page,
-      limit,
-      search: search || '',
-      category: category || '',
-      sort: sort || '',
-      sortBy: sortBy || '',
-    }),
-    {
-      method: 'GET',
-    }
-  );
+  const url = buildUrl(['posts', 'get-posts'], {
+    page,
+    limit,
+    search: search || '',
+    category: category || '',
+    sort: sort || '',
+    sortBy: sortBy || '',
+  });
+
+  const response = await api.get<AllPostsResponse>(url);
+  return response.data;
 };
 
 export const getOnePost = async (slug: string): Promise<Post> => {
-  return sendRequest(buildUrl(['posts', slug]), {
-    method: 'GET',
-  });
+  const response = await api.get<Post>(buildUrl(['posts', slug]));
+  return response.data;
 };
 
 export const getMyPosts = async (): Promise<Post[]> => {
-  return sendRequest(buildUrl(['posts', 'my-posts']), {
-    method: 'GET',
-    withCredentials: true,
-  });
+  const response = await api.get<Post[]>(buildUrl(['posts', 'my-posts']));
+  return response.data;
 };
 
 export const updatePost = async (slug: string, data: Partial<Post>) => {
-  return sendRequest(buildUrl(['posts', 'update-post', slug]), {
-    method: 'PATCH',
-    data,
-    withCredentials: true,
-  });
+  const response = await api.patch(
+    buildUrl(['posts', 'update-post', slug]),
+    data
+  );
+  return response.data;
 };
 
 export const deletePost = async (slug: string) => {
-  return sendRequest(buildUrl(['posts', 'delete-post', slug]), {
-    method: 'DELETE',
-    withCredentials: true,
-  });
+  await api.delete(buildUrl(['posts', 'delete-post', slug]));
 };
 
 export const getPostsByCategory = async (
   category: string
 ): Promise<AllPostsResponse> => {
-  return sendRequest(buildUrl(['posts', 'get-posts'], { category }), {
-    method: 'GET',
-  });
+  const url = buildUrl(['posts', 'get-posts'], { category });
+  const response = await api.get<AllPostsResponse>(url);
+  return response.data;
 };

@@ -1,30 +1,26 @@
-import axios, { AxiosRequestConfig } from 'axios';
+import axios from 'axios';
 
+export const api = axios.create({
+  baseURL: 'https://my-blog-dn9y.onrender.com/api',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  withCredentials: true,
+});
+
+// Тип значений для query-параметров
 type QueryValue = string | number | boolean;
+
+
 export const buildUrl = (
   paths: (string | number)[],
   queryParams?: Record<string, QueryValue>
 ): string => {
-  const baseUrl = `https://my-blog-dn9y.onrender.com/api/${paths.join('/')}`;
-
-  const query = queryParams
-    ? new URLSearchParams(
+  const path = paths.join('/');
+  const queryString = queryParams
+    ? `?${new URLSearchParams(
         Object.entries(queryParams).map(([key, value]) => [key, String(value)])
-      ).toString()
+      ).toString()}`
     : '';
-
-  return query ? `${baseUrl}?${query}` : baseUrl;
-};
-
-export const sendRequest = async <T>(
-  url: string,
-  config?: AxiosRequestConfig
-): Promise<T> => {
-  try {
-    const response = await axios(url, config);
-    return response.data as T;
-  } catch (error) {
-    console.error('Error during request:', error);
-    throw error;
-  }
+  return `${path}${queryString}`;
 };

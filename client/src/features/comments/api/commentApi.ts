@@ -1,4 +1,4 @@
-import { buildUrl, sendRequest } from '../../../shared/config/instance';
+import { buildUrl, api } from '../../../shared/config/instance';
 import { Comment, PostCommentResponse } from '../../../shared/types';
 
 export type CommentPayload = {
@@ -18,53 +18,54 @@ interface commentsResponse {
 }
 
 export const createComment = async (data: CommentPayload) => {
-  return sendRequest(buildUrl(['comments', 'add-comment']), {
-    method: 'POST',
-    data,
-    withCredentials: true,
-  });
+  const response = await api.post<PostCommentResponse>(
+    buildUrl(['comments', 'add-comment']),
+    data
+  );
+  return response.data;
 };
 
 export const getPostComments = async (
   postId: string
 ): Promise<PostCommentResponse[]> => {
-  return sendRequest(buildUrl(['comments', 'get-post-comments', postId]), {
-    method: 'GET',
-  });
+  const response = await api.get<PostCommentResponse[]>(
+    buildUrl(['comments', 'get-post-comments', postId])
+  );
+  return response.data;
 };
 
 export const getComments = async ({
   page = 1,
   limit = 5,
 }: getComment): Promise<commentsResponse> => {
-  return sendRequest(buildUrl(['comments', 'get-comments'], { page, limit }), {
-    method: 'GET',
-  });
+  const response = await api.get<commentsResponse>(
+    buildUrl(['comments', 'get-comments'], {
+      page,
+      limit,
+    })
+  );
+  return response.data;
 };
 
 export const likeComment = async (
   commentId: string
 ): Promise<PostCommentResponse[]> => {
-  return sendRequest(buildUrl(['comments', 'like-comment', commentId]), {
-    method: 'Put',
-    withCredentials: true,
-  });
+  const response = await api.put<PostCommentResponse[]>(
+    buildUrl(['comments', 'like-comment', commentId])
+  );
+  return response.data;
 };
 
-export const deleteComment = async (commentId: string) => {
-  return sendRequest(buildUrl(['comments', 'delete-comment', commentId]), {
-    method: 'DELETE',
-    withCredentials: true,
-  });
+export const deleteComment = async (commentId: string): Promise<void> => {
+  await api.delete(buildUrl(['comments', 'delete-comment', commentId]));
 };
-
 export const editComment = async (
   commentId: string,
   data: CommentPayload
 ): Promise<PostCommentResponse[]> => {
-  return sendRequest(buildUrl(['comments', 'edit-comment', commentId]), {
-    method: 'PUT',
-    data,
-    withCredentials: true,
-  });
+  const response = await api.put<PostCommentResponse[]>(
+    buildUrl(['comments', 'edit-comment', commentId]),
+    data
+  );
+  return response.data;
 };

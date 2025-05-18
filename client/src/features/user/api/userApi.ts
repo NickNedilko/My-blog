@@ -1,4 +1,4 @@
-import { buildUrl, sendRequest } from '../../../shared/config/instance';
+import { buildUrl, api } from '../../../shared/config/instance';
 import { User } from '../../../shared/types';
 
 interface UsersResponse {
@@ -7,41 +7,34 @@ interface UsersResponse {
   lastMonthUsers: number;
 }
 
-export const getUser = (): Promise<User> => {
-  return sendRequest(buildUrl(['user', 'get-user']), {
-    method: 'GET',
-    withCredentials: true,
-  });
+export const getUser = async (): Promise<User> => {
+  const response = await api.get<User>(buildUrl(['user', 'get-user']));
+  return response.data;
 };
 
-export const updateUser = (data: Partial<User>) => {
-  return sendRequest(buildUrl(['user', 'update-user']), {
-    method: 'PATCH',
-    data,
-    withCredentials: true,
-  });
+export const updateUser = async (data: Partial<User>): Promise<User> => {
+  const response = await api.patch<User>(
+    buildUrl(['user', 'update-user']),
+    data
+  );
+  return response.data;
 };
 
-export const deleteUser = (id: string) => {
-  return sendRequest(buildUrl(['user', 'delete-user', id]), {
-    method: 'DELETE',
-    withCredentials: true,
-  });
+export const deleteUser = async (id: string): Promise<void> => {
+  await api.delete(buildUrl(['user', 'delete-user', id]));
 };
 
 export const getUsers = async (
   page: number,
   limit: number
 ): Promise<UsersResponse> => {
-  return sendRequest(buildUrl(['user', 'get-users'], { page, limit }), {
-    method: 'GET',
-    withCredentials: true,
-  });
+  const response = await api.get<UsersResponse>(
+    buildUrl(['user', 'get-users'], { page, limit })
+  );
+  return response.data;
 };
 
 export const getUserById = async (id: string): Promise<User> => {
-  return sendRequest(buildUrl(['user', id]), {
-    method: 'GET',
-    withCredentials: true,
-  });
+  const response = await api.get<User>(buildUrl(['user', id]));
+  return response.data;
 };
