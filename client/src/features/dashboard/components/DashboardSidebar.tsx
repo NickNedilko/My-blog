@@ -20,9 +20,9 @@ import { useLogoutMutation } from '../../auth/api/mutations/auth-mutation';
 export const DashboardSidebar = () => {
   const { mutate: logout } = useLogoutMutation();
   const [searchParams] = useSearchParams();
-  const { user, isLoggedIn } = useAuthStore();
+  const { user } = useAuthStore();
   const { t } = useTranslation();
-  console.log(isLoggedIn);
+
   const tab = searchParams.get('tab') || '';
   return (
     <Sidebar className="w-full md:w-56">

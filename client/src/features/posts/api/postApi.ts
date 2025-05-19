@@ -1,4 +1,4 @@
-import { buildUrl, api } from '../../../shared/config/instance';
+import { api } from '../../../shared/config/api';
 import { Post } from '../../../shared/types';
 
 interface AllPostsResponse {
@@ -9,7 +9,7 @@ interface AllPostsResponse {
 }
 
 export const createPost = async (data: Partial<Post>): Promise<Post> => {
-  const response = await api.post<Post>(buildUrl(['posts', 'add-post']), data);
+  const response = await api.post<Post>('/posts', data);
   return response.data;
 };
 
@@ -21,45 +21,43 @@ export const getAllPosts = async (
   sort?: string,
   sortBy?: string
 ): Promise<AllPostsResponse> => {
-  const url = buildUrl(['posts', 'get-posts'], {
-    page,
-    limit,
-    search: search || '',
-    category: category || '',
-    sort: sort || '',
-    sortBy: sortBy || '',
+  const response = await api.get<AllPostsResponse>('/posts', {
+    params: {
+      page,
+      limit,
+      search,
+      category,
+      sort,
+      sortBy,
+    },
   });
-
-  const response = await api.get<AllPostsResponse>(url);
   return response.data;
 };
 
 export const getOnePost = async (slug: string): Promise<Post> => {
-  const response = await api.get<Post>(buildUrl(['posts', slug]));
+  const response = await api.get<Post>(`/posts/${slug}`);
   return response.data;
 };
 
 export const getMyPosts = async (): Promise<Post[]> => {
-  const response = await api.get<Post[]>(buildUrl(['posts', 'my-posts']));
+  const response = await api.get<Post[]>('/posts/my');
   return response.data;
 };
 
 export const updatePost = async (slug: string, data: Partial<Post>) => {
-  const response = await api.patch(
-    buildUrl(['posts', 'update-post', slug]),
-    data
-  );
+  const response = await api.patch(`/posts/${slug}`, data);
   return response.data;
 };
 
 export const deletePost = async (slug: string) => {
-  await api.delete(buildUrl(['posts', 'delete-post', slug]));
+  await api.delete(`/posts/${slug}`);
 };
 
 export const getPostsByCategory = async (
   category: string
 ): Promise<AllPostsResponse> => {
-  const url = buildUrl(['posts', 'get-posts'], { category });
-  const response = await api.get<AllPostsResponse>(url);
+  const response = await api.get<AllPostsResponse>('/posts', {
+    params: { category },
+  });
   return response.data;
 };
