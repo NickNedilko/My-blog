@@ -1,9 +1,9 @@
-import mongoose from 'mongoose'
-import {app} from './app.js'
+import mongoose from 'mongoose';
+import { app } from './app.js';
+
 
 
 const {PORT = 3000, DB_HOST} = process.env
-
 mongoose.connect(DB_HOST).
   then(() =>app.listen(PORT)).
   catch((error) => {

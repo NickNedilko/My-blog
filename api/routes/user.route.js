@@ -7,9 +7,10 @@ import { deleteUser, getAllUsers, getCurrentUser, getUserById, updateUser } from
 
 const router = express.Router();
 
-router.get("/get-user", authenticate, ctrlWrapper(getCurrentUser));
-router.patch("/update-user", authenticate, ctrlWrapper(updateUser));
-router.delete("/delete-user/:id", authenticate, ctrlWrapper(deleteUser)); 
-router.get("/get-users", authenticate, ctrlWrapper(getAllUsers));
+router.get("/me", authenticate, ctrlWrapper(getCurrentUser));
+router.patch("/me", authenticate, ctrlWrapper(updateUser));
+router.delete("/:id", authenticate, ctrlWrapper(deleteUser)); 
+router.get("/", authenticate, ctrlWrapper(getAllUsers));
 router.get("/:id", ctrlWrapper(getUserById)); 
+
 export default router;

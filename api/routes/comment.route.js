@@ -7,11 +7,11 @@ import { createComment, deleteComment, getAllComments, getPostComments, likeComm
 const router = express.Router();
 
 
-router.post("/add-comment", authenticate, ctrlWrapper(createComment));
-router.get("/get-post-comments/:postId", ctrlWrapper(getPostComments));
-router.get("/get-comments", ctrlWrapper(getAllComments));
-router.put("/like-comment/:commentId", authenticate, ctrlWrapper(likeComment));
-router.delete("/delete-comment/:commentId", authenticate, ctrlWrapper(deleteComment));
-router.put("/edit-comment/:commentId", authenticate, ctrlWrapper(updateComment));
+router.post("/", authenticate, ctrlWrapper(createComment));
+router.get("/:postId", ctrlWrapper(getPostComments));
+router.get("/", ctrlWrapper(getAllComments));
+router.put("/:commentId/like", authenticate, ctrlWrapper(likeComment));
+router.delete("/:commentId", authenticate, ctrlWrapper(deleteComment));
+router.put("/:commentId", authenticate, ctrlWrapper(updateComment));
 
 export default router;

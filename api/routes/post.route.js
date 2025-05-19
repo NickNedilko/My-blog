@@ -7,12 +7,12 @@ import { createPost, deletePost, getMyPosts, getOnePost, getposts, updatePost } 
 const router = express.Router();
 
 
-router.post("/add-post", authenticate, ctrlWrapper(createPost));
-router.get("/get-posts", ctrlWrapper(getposts)); 
-router.get("/my-posts", authenticate, ctrlWrapper(getMyPosts));  
+router.post("/", authenticate, ctrlWrapper(createPost));
+router.get("/", ctrlWrapper(getposts)); 
+router.get("/my", authenticate, ctrlWrapper(getMyPosts));  
 router.get("/:slug", ctrlWrapper(getOnePost));   
-router.patch("/update-post/:slug", authenticate, ctrlWrapper(updatePost)); 
-router.delete("/delete-post/:slug", authenticate, ctrlWrapper(deletePost));
+router.patch("/:slug", authenticate, ctrlWrapper(updatePost)); 
+router.delete("/:slug", authenticate, ctrlWrapper(deletePost));
 
 
 export default router;
