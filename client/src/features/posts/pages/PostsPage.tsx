@@ -9,7 +9,6 @@ import { getAllPosts } from '../api/postApi';
 
 import { CommentsBlock } from '../../comments/components/CommentsBlock';
 import { getComments } from '../../comments/api/commentApi';
-import { useAuthStore } from '../../auth/model/auth-store';
 import Pagination from '../../../shared/components/Pagination';
 
 const PostsPage = () => {
@@ -17,7 +16,7 @@ const PostsPage = () => {
   const [page, setPage] = useState(1);
   const { i18n } = useTranslation();
   const [tab, setTab] = useState('new');
-  const { user } = useAuthStore();
+  
   const sortBy = tab === 'new' ? 'createdAt' : 'views';
 
   const { data, isLoading } = useQuery({
@@ -40,7 +39,6 @@ const PostsPage = () => {
             posts={data?.posts || []}
             isLoading={isLoading}
             lang={i18n.language}
-            isEditable={user?.isAdmin}
           />
           <Pagination
             page={page}

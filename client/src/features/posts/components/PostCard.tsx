@@ -14,6 +14,7 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useDeletePostMutation } from '../api/mutations/post-mutation';
 import { UserInfo } from '../../user/components/UserInfo';
+import { useAuthStore } from '../../auth/model/auth-store';
 
 interface PostProps {
   id?: string;
@@ -34,7 +35,6 @@ interface PostProps {
   children?: React.ReactNode;
   isFullPost?: boolean;
   isLoading?: boolean;
-  isEditable?: boolean;
 }
 
 export const PostCard: FC<PostProps> = ({
@@ -50,13 +50,15 @@ export const PostCard: FC<PostProps> = ({
   children,
   isFullPost,
   isLoading,
-  isEditable,
+
 }) => {
   const { t } = useTranslation();
-
   if (isLoading) {
     return <div>skeleton</div>;
   }
+  const { user: currentUser } = useAuthStore();
+
+  const isEditablePost = currentUser?._id === user?._id || currentUser?.isAdmin;
 
   const { mutate: deletePost } = useDeletePostMutation();
   const categoryKey = category.toLowerCase();
@@ -67,7 +69,7 @@ export const PostCard: FC<PostProps> = ({
     <div
       className={`bg-white border border-[#dedede] rounded-lg overflow-hidden mb-4 relative ${isFullPost ? 'hover:border-[#4361ee] hover:shadow-md' : ''}`}
     >
-      {isEditable && (
+      {isEditablePost  && (
         <div className="absolute flex right-4 top-4 p-3 gap-3 bg-slate-400 text-white text-xl rounded-xl ">
           <Link to={`/dashboard?tab=edit-post&slug=${slug}`}>
             <MdEdit />

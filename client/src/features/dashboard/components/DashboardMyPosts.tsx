@@ -8,6 +8,7 @@ export const DashboardMyPosts = () => {
     queryKey: ['my-posts'],
     queryFn: getMyPosts,
     refetchOnWindowFocus: true,
+    
   });
 
   if (posts?.length === 0) {

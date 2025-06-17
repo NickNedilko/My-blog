@@ -9,7 +9,7 @@ export const useCreatePostMutation = () => {
     onSuccess: async () => {
       toast.success('Post created successfully!');
       await queryClient.invalidateQueries({
-        queryKey: ['posts'],
+        queryKey: ['my-posts'],
       });
     },
   });
@@ -22,9 +22,10 @@ export const useUpdatePostMutation = () => {
       updatePost(slug, data),
     onSuccess: async () => {
       toast.success('Post updated successfully!');
-      await queryClient.invalidateQueries({
-        queryKey: ['posts'],
-      });
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ['posts'] }),
+        queryClient.invalidateQueries({ queryKey: ['my-posts'] }),
+      ]);
     },
   });
 };
@@ -36,9 +37,10 @@ export const useDeletePostMutation = () => {
     mutationFn: (slug: string) => deletePost(slug),
     onSuccess: async () => {
       toast.success('Post deleted successfully!');
-      await queryClient.invalidateQueries({
-        queryKey: ['posts'],
-      });
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ['posts'] }),
+        queryClient.invalidateQueries({ queryKey: ['my-posts'] }),
+      ]);
     },
     onError: () => {
       toast.error('Failed to delete post.');
